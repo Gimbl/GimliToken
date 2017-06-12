@@ -258,16 +258,16 @@ contract GimliToken {
     /// @param _contractAddress The contract address
     /// @return authorized fees and max price allowed
     function getAllowedContract(address _streamerAddress, address _contractAddress)
-        returns (uint256, uint256, uint256) {
+        returns (uint256, uint256, uint256, bool) {
         contractAllowance a = authorizedStreamerAllowances[_streamerAddress].allowances[_contractAddress];
-        return (a.streamerFeesPpm, a.gimliFeesPpm, a.maxPrice);
+        return (a.streamerFeesPpm, a.gimliFeesPpm, a.maxPrice, a.exists);
     }
 
     /// @param _streamerAddress The streamer address
     /// @param _contractIndex The contract index
     /// @return authorized fees and max price allowed
     function getAllowedContracByIndex(address _streamerAddress, uint256 _contractIndex)
-        returns (uint256, uint256, uint256) {
+        returns (uint256, uint256, uint256, bool) {
         return getAllowedContract(_streamerAddress, authorizedStreamerAllowances[_streamerAddress].allowedContracts[_contractIndex]);
     }
 
