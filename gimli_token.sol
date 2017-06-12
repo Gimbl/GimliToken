@@ -1,10 +1,28 @@
 pragma solidity ^0.4.11;
 
-
 /*
 Implements ERC 20 Token standard: https://github.com/ethereum/EIPs/issues/20
 .*/
+
 contract GimliToken {
+
+    /**************
+    **** Types ****
+    **************/
+
+    struct Streamer {
+        bool       authorized;
+        mapping    (address => contractAllowance) allowances; // Contract allowances indexed by contract address
+        address[]  allowedContracts; // List of allowed contracts
+        bool       exists;
+    }
+
+    struct contractAllowance {
+        uint256    streamerFeesPpm; // ppm, ex: 5 for 0.5%
+        uint256    gimliFeesPpm; // ppm, ex: 5 for 0.5%
+        uint256    maxPrice;
+        bool       exists;
+    }
 
     /*************************
     **** Global variables ****
@@ -35,9 +53,9 @@ contract GimliToken {
     uint256 ICOPrice = 1 finney / 10**8; // 0.001 ETH
     bool ICOClosed = false;
 
-    /// Maximum GML fees by authorized contract
-    mapping (address => uint256) authorizedContractsAllowance;
-    address[] authorizedContracts;
+    /// Authorized streamers
+    mapping (address => Streamer) authorizedStreamerAllowances;
+    address[] authorizedStreamers;
 
 
     /***************
@@ -123,28 +141,64 @@ contract GimliToken {
     }
 
     /// @notice authorize an address to proceed fees payment
-    function authorizeContract(address _contractAddress, uint256 maxFees) {
-        // only owner can set authorize an address
+    function authorizeStreamer(
+        address _streamerAddress,
+        address _contractAddress,
+        uint256 _streamerFeesPpm,
+        uint256 _gimliFeesPpm,
+        uint256 _maxPrice)
+    {
+        // only owner can set authorize streamers
         require(msg.sender == owner);
 
-        authorizedContractsAllowance[_contractAddress] = maxFees;
-        authorizedContracts.push(_contractAddress);
+        // The whole GML payment must be shared
+        require(_streamerFeesPpm + _gimliFeesPpm == 1000);
+
+        if (!authorizedStreamerAllowances[_streamerAddress].exists) {
+             authorizedStreamers.push(_streamerAddress);
+        } else if (!authorizedStreamerAllowances[_streamerAddress].allowances[_contractAddress].exists) {
+            authorizedStreamerAllowances[_streamerAddress].allowedContracts.push(_contractAddress);
+        }
+
+        authorizedStreamerAllowances[_streamerAddress].authorized = true;
+        authorizedStreamerAllowances[_streamerAddress].exists = true;
+        authorizedStreamerAllowances[_streamerAddress].allowances[_contractAddress].streamerFeesPpm = _streamerFeesPpm;
+        authorizedStreamerAllowances[_streamerAddress].allowances[_contractAddress].gimliFeesPpm = _gimliFeesPpm;
+        authorizedStreamerAllowances[_streamerAddress].allowances[_contractAddress].maxPrice = _maxPrice;
+        authorizedStreamerAllowances[_streamerAddress].allowances[_contractAddress].exists = true;
+    }
+
+    // Revoke a streamer
+    function revokeStreamer(address _streamerAddress) {
+        // Only Gimli can revoke a streamer
+        require(msg.sender == owner);
+
+        authorizedStreamerAllowances[_streamerAddress].authorized = false;
     }
 
     /// @notice fees payment called by Gimli contracts
-    function payFeesFor(address _user, uint256 fees) {
-        // only allowed contract can pay fees
-        require(authorizedContractsAllowance[msg.sender] >= fees);
+    function claimGMLPayment(address _streamerAddress, address _userAddress, uint256 price) {
+
+        // only authorized streamer can claim payment
+        require(authorizedStreamerAllowances[_streamerAddress].authorized);
+
+        // only allowed contract can claim payment
+        require(authorizedStreamerAllowances[_streamerAddress].allowances[msg.sender].maxPrice >= price);
 
         // only _user can be the origin of this transaction
-        require(tx.origin == _user);
+        require(tx.origin == _userAddress);
 
-        // check balance
-        require(balances[_user] >= fees);
+        // check user balance
+        require(balances[_userAddress] >= price);
+
+        // Calculates fees
+        uint256 gimliFees = (authorizedStreamerAllowances[_streamerAddress].allowances[msg.sender].gimliFeesPpm * price) / 1000;
+        uint256 streamerFees = (authorizedStreamerAllowances[_streamerAddress].allowances[msg.sender].streamerFeesPpm * price) / 1000;
 
         // update balances
-        balances[_user] -= fees;
-        balances[owner] += fees;
+        balances[_userAddress] -= price;
+        balances[owner] += gimliFees;
+        balances[_streamerAddress] += streamerFees;
     }
 
     function withdrawalETH(address _to) {
@@ -183,20 +237,38 @@ contract GimliToken {
     }
 
     /// @return authorized contract count
-    function getAuthorizedContractCount() returns (uint256) {
-        return authorizedContracts.length;
+    function getAuthorizedStreamerCount() returns (uint256) {
+        return authorizedStreamers.length;
     }
 
+    /// @param _streamerAddress The streamer address
+    /// @return authorized streamer
+    function getAuthorizedStreamer(address _streamerAddress) returns (bool, uint256) {
+        return (authorizedStreamerAllowances[_streamerAddress].authorized,
+                authorizedStreamerAllowances[_streamerAddress].allowedContracts.length);
+    }
+
+    /// @param _streamerIndex The contract index
+    /// @return authorized streamer
+    function getAuthorizedStreamerByIndex(uint256 _streamerIndex) returns (bool, uint256) {
+        return getAuthorizedStreamer(authorizedStreamers[_streamerIndex]);
+    }
+
+    /// @param _streamerAddress The streamer address
     /// @param _contractAddress The contract address
-    /// @return get contract allowance
-    function getContractAllowance(address _contractAddress) returns (uint256) {
-        return authorizedContractsAllowance[_contractAddress];
+    /// @return authorized fees and max price allowed
+    function getAllowedContract(address _streamerAddress, address _contractAddress)
+        returns (uint256, uint256, uint256) {
+        contractAllowance a = authorizedStreamerAllowances[_streamerAddress].allowances[_contractAddress];
+        return (a.streamerFeesPpm, a.gimliFeesPpm, a.maxPrice);
     }
 
+    /// @param _streamerAddress The streamer address
     /// @param _contractIndex The contract index
-    /// @return get contract allowance
-    function getContractAllowanceByIndex(uint256 _contractIndex) returns (uint256) {
-        return authorizedContractsAllowance[authorizedContracts[_contractIndex]];
+    /// @return authorized fees and max price allowed
+    function getAllowedContracByIndex(address _streamerAddress, uint256 _contractIndex)
+        returns (uint256, uint256, uint256) {
+        return getAllowedContract(_streamerAddress, authorizedStreamerAllowances[_streamerAddress].allowedContracts[_contractIndex]);
     }
 
 }
