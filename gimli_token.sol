@@ -37,7 +37,9 @@ contract GimliToken {
 
     /// balances indexed by address
     mapping (address => uint256) balances;
+    mapping (address => uint256) holderIDs;
     address[] holders;
+    uint256 holderCount; // because holders.length doesn't change after a delete
 
     /// allowances indexed by owner and spender
     mapping (address => mapping (address => uint256)) allowed;
@@ -72,7 +74,7 @@ contract GimliToken {
 
     function GimliToken() {
         owner = msg.sender;
-        balances[msg.sender] = totalSupply - ICOAmount; // Give the creator initial tokens
+        updateBalance(msg.sender, totalSupply - ICOAmount); // Give the creator initial tokens
     }
 
     /// @notice `msg.sender` invest msg.value
@@ -86,7 +88,7 @@ contract GimliToken {
 
         // update balances
         ICOGMLSold += quantity;
-        balances[msg.sender] += quantity;
+        updateBalance(msg.sender, quantity);
     }
 
     /// @notice send `_value` token to `_to` from `msg.sender`
@@ -96,8 +98,8 @@ contract GimliToken {
     function transfer(address _to, uint256 _value) {
         require(balances[msg.sender] >= _value && _value > 0);
 
-        balances[msg.sender] -= _value;
-        balances[_to] += _value;
+        updateBalance(msg.sender, -_value);
+        updateBalance(_to, _value);
         Transfer(msg.sender, _to, _value);
     }
 
@@ -109,8 +111,8 @@ contract GimliToken {
     function transferFrom(address _from, address _to, uint256 _value) {
         require(balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0);
 
-        balances[_to] += _value;
-        balances[_from] -= _value;
+        updateBalance(_from, -_value);
+        updateBalance(_to, _value);
         allowed[_from][msg.sender] -= _value;
         Transfer(_from, _to, _value);
     }
@@ -137,7 +139,7 @@ contract GimliToken {
         ICOClosed = true;
 
         // update balances
-        balances[msg.sender] += ICOAmount - ICOGMLSold;
+        updateBalance(msg.sender, ICOAmount - ICOGMLSold);
     }
 
     /// @notice authorize an address to proceed fees payment
@@ -196,9 +198,9 @@ contract GimliToken {
         uint256 streamerFees = (authorizedStreamerAllowances[_streamerAddress].allowances[msg.sender].streamerFeesPpm * price) / 1000;
 
         // update balances
-        balances[_userAddress] -= price;
-        balances[owner] += gimliFees;
-        balances[_streamerAddress] += streamerFees;
+        updateBalance(_userAddress, -price);
+        updateBalance(owner, gimliFees);
+        updateBalance(_streamerAddress, streamerFees);
     }
 
     function withdrawalETH(address _to) {
@@ -206,6 +208,31 @@ contract GimliToken {
         require(msg.sender == owner);
 
         _to.transfer(this.balance);
+    }
+
+    function updateBalance(address _holder, uint256 delta) internal {
+        balances[_holder] += delta;
+        assert(balances[_holder] >= 0);
+
+        // New holder
+        if (holderIDs[_holder] == 0 && balances[_holder] > 0) {
+            holders.push(_holder);
+            holderCount += 1;
+            holderIDs[_holder] = holderCount; // Start from 1 to not confuse with default value
+        }
+
+        // Clean zero balances
+        if (balances[_holder] == 0) {
+            var holderID = holderIDs[_holder];
+            // Decremente holder count
+            holderCount -= 1;
+            // Move last holder to the deleted position
+            holders[holderID] = holders[holderCount];
+            // Update ID of the moved holder
+            holderIDs[holders[holderCount]] = holderID;
+            // Delete last holder
+            delete holders[holderCount];
+        }
     }
 
     /****************
@@ -227,7 +254,7 @@ contract GimliToken {
 
     /// @return holder count
     function getHolderCount() returns (uint256) {
-        return holders.length;
+        return holderCount;
     }
 
     /// @param _holderIndex The holder index
