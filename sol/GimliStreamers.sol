@@ -1,9 +1,17 @@
-import "SafeMath.sol";
-import "GimliToken.sol";
-
 pragma solidity ^0.4.11;
 
-contract GimliStreamers is SafeMath, GimliToken {
+import "SafeMath.sol";
+import "GimliToken.sol";
+import "Administrable.sol";
+
+/*
+This contract manages streamer authorizations. To make a streamer able to create
+a game (Bet, vote, etc.), the owner must authorize him with the function :
+`authorizeStreamer()`.
+When a user plays (bet or vote), the game contract (GimliBetting, GimliVoting, ..),
+calls the function `claimGMLPayment()`.
+*/
+contract GimliStreamers is SafeMath, GimliToken, Administrable {
 
     struct Streamer {
         bool       authorized;
@@ -29,7 +37,7 @@ contract GimliStreamers is SafeMath, GimliToken {
         address _contractAddress,
         uint256 _streamerFeesPpm,
         uint256 _gimliFeesPpm,
-        uint256 _maxPrice) onlyOwner
+        uint256 _maxPrice) onlyAdministrator
     {
         // The whole GML payment must be shared
         require(safeAdd(_streamerFeesPpm, _gimliFeesPpm) == 1000);
@@ -54,7 +62,7 @@ contract GimliStreamers is SafeMath, GimliToken {
     }
 
     // Revoke a streamer
-    function revokeStreamer(address _streamerAddress) onlyOwner {
+    function revokeStreamer(address _streamerAddress) onlyAdministrator {
         authorizedStreamerAllowances[_streamerAddress].authorized = false;
     }
 
