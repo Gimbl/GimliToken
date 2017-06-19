@@ -6,7 +6,6 @@ pragma solidity ^0.4.11;
 
 contract GimliToken is ERC20, SafeMath, Ownable {
 
-
     /*************************
     **** Global variables ****
     *************************/
