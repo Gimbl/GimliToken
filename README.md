@@ -45,3 +45,8 @@ In order to deploy Gimli Smart Contract do the following:
    the following: `Deployed at ... (tx: ...)`,
    which means that your contract was deployed (message shows address of the
    contract and hash of the transaction the contract was deployed by)
+
+## TODO ##
+
+- Write tests
+- Clean and add comments

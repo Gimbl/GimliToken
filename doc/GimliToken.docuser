@@ -1,0 +1,13 @@
+{
+   "methods" : {
+      "approve(address,uint256)" : {
+         "notice" : "`msg.sender` approves `_spender` to spend `_value` tokens"
+      },
+      "transfer(address,uint256)" : {
+         "notice" : "send `_value` token to `_to` from `msg.sender`"
+      },
+      "transferFrom(address,address,uint256)" : {
+         "notice" : "send `_value` token to `_to` from `_from` on the condition it is approved by `_from`"
+      }
+   }
+}

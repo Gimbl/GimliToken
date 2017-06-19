@@ -1,0 +1,22 @@
+{
+   "methods" : {
+      "approve(address,uint256)" : {
+         "notice" : "`msg.sender` approves `_spender` to spend `_value` tokens"
+      },
+      "authorizeStreamer(address,address,uint256,uint256,uint256)" : {
+         "notice" : "authorize an address to proceed fees payment"
+      },
+      "claimGMLPayment(address,address,uint256)" : {
+         "notice" : "fees payment called by Gimli contracts"
+      },
+      "closeCrowdsale()" : {
+         "notice" : "returns non-sold tokens to owner"
+      },
+      "transfer(address,uint256)" : {
+         "notice" : "send `_value` token to `_to` from `msg.sender`"
+      },
+      "transferFrom(address,address,uint256)" : {
+         "notice" : "send `_value` token to `_to` from `_from` on the condition it is approved by `_from`"
+      }
+   }
+}
