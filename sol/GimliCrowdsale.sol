@@ -3,6 +3,8 @@ import "GimliToken.sol";
 
 pragma solidity ^0.4.11;
 
+
+/// @title Gimli Crowdsale Contract.
 contract GimliCrowdsale is SafeMath, GimliToken {
 
     uint256 public constant CROWDSALE_AMOUNT = 100 * MILLION_GML;
@@ -13,8 +15,9 @@ contract GimliCrowdsale is SafeMath, GimliToken {
     uint256 public GMLSold = 0;
     bool public crowdsaleClosed = false;
 
-    /// @notice `msg.sender` invest msg.value
+    /// @notice `msg.sender` invest `msg.value`
     function() payable {
+        require(msg.value > 0);
         // check date
         require(block.number >= CROWDSALE_START_BLOCK && block.number <= CROWDSALE_END_BLOCK);
 
@@ -24,7 +27,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
 
         // update balances
         GMLSold += quantity;
-        updateBalance(msg.sender, quantity);
+        addToBalance(msg.sender, quantity);
     }
 
     /// @notice returns non-sold tokens to owner
@@ -37,13 +40,11 @@ contract GimliCrowdsale is SafeMath, GimliToken {
         crowdsaleClosed = true;
 
         // update balances
-        updateBalance(msg.sender, CROWDSALE_AMOUNT - GMLSold);
+        addToBalance(owner, CROWDSALE_AMOUNT - GMLSold);
     }
 
-    function getCrowdsale() returns (uint256, uint256, uint256, uint256, uint256, uint256, bool) {
-        return (totalSupply, CROWDSALE_AMOUNT, CROWDSALE_START_BLOCK, CROWDSALE_END_BLOCK, GMLSold, CROWDSALE_PRICE, crowdsaleClosed);
-    }
-
+    /// @notice Send GML payments  to `_to`
+    /// @param _to The withdrawal destination
     function withdrawalCrowdsale(address _to) onlyOwner {
         _to.transfer(this.balance);
     }

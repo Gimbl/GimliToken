@@ -1,22 +1,64 @@
 {
    "methods" : {
+      "addAdministrators(address)" : {
+         "notice" : "Add an administrator"
+      },
+      "allowance(address,address)" : {
+         "notice" : "Get tokens allowed to spent by `_spender`"
+      },
       "approve(address,uint256)" : {
          "notice" : "`msg.sender` approves `_spender` to spend `_value` tokens"
       },
       "authorizeStreamer(address,address,uint256,uint256,uint256)" : {
-         "notice" : "authorize an address to proceed fees payment"
+         "notice" : "authorize an address to create Gimli game (bet, vote, etc.)"
+      },
+      "balanceOf(address)" : {
+         "notice" : "Get balance of an address"
       },
       "claimGMLPayment(address,address,uint256)" : {
-         "notice" : "fees payment called by Gimli contracts"
+         "notice" : "Called by a Gimli contract to claim game payment"
       },
       "closeCrowdsale()" : {
          "notice" : "returns non-sold tokens to owner"
+      },
+      "getAllowedContracByIndex(address,uint256)" : {
+         "notice" : "Get information about a contract allowed to a streamer"
+      },
+      "getAllowedContract(address,address)" : {
+         "notice" : "Get information about a contract allowed to a streamer"
+      },
+      "getAuthorizedStreamer(address)" : {
+         "notice" : "Return information about a streamer"
+      },
+      "getAuthorizedStreamerByIndex(uint256)" : {
+         "notice" : "Return information about a streamer"
+      },
+      "getAuthorizedStreamerCount()" : {
+         "notice" : "Get authorized streamers count"
+      },
+      "getBalanceByIndex(uint256)" : {
+         "notice" : "Get balance by index"
+      },
+      "getHolderCount()" : {
+         "notice" : "Get holder count"
+      },
+      "removeAdministrators(address)" : {
+         "notice" : "Remove an administrator"
+      },
+      "revokeStreamer(address)" : {
+         "notice" : "Revoke a streamer for all contracts"
       },
       "transfer(address,uint256)" : {
          "notice" : "send `_value` token to `_to` from `msg.sender`"
       },
       "transferFrom(address,address,uint256)" : {
          "notice" : "send `_value` token to `_to` from `_from` on the condition it is approved by `_from`"
+      },
+      "transferOwnership(address)" : {
+         "notice" : "Transfer ownership from `owner` to `newOwner`"
+      },
+      "withdrawalCrowdsale(address)" : {
+         "notice" : "Send GML payments  to `_to`"
       }
    }
 }

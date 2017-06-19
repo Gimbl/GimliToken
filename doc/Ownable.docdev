@@ -1,3 +1,10 @@
 {
-   "methods" : {}
+   "methods" : {
+      "transferOwnership(address)" : {
+         "params" : {
+            "newOwner" : "The new contract owner"
+         }
+      }
+   },
+   "title" : "Base contract with an owner."
 }

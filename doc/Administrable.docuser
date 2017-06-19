@@ -1,3 +1,13 @@
 {
-   "methods" : {}
+   "methods" : {
+      "addAdministrators(address)" : {
+         "notice" : "Add an administrator"
+      },
+      "removeAdministrators(address)" : {
+         "notice" : "Remove an administrator"
+      },
+      "transferOwnership(address)" : {
+         "notice" : "Transfer ownership from `owner` to `newOwner`"
+      }
+   }
 }

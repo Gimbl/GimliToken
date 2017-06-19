@@ -1,3 +1,7 @@
 {
-   "methods" : {}
+   "methods" : {
+      "transferOwnership(address)" : {
+         "notice" : "Transfer ownership from `owner` to `newOwner`"
+      }
+   }
 }

@@ -1,13 +1,28 @@
 {
    "methods" : {
+      "allowance(address,address)" : {
+         "notice" : "Get tokens allowed to spent by `_spender`"
+      },
       "approve(address,uint256)" : {
          "notice" : "`msg.sender` approves `_spender` to spend `_value` tokens"
+      },
+      "balanceOf(address)" : {
+         "notice" : "Get balance of an address"
+      },
+      "getBalanceByIndex(uint256)" : {
+         "notice" : "Get balance by index"
+      },
+      "getHolderCount()" : {
+         "notice" : "Get holder count"
       },
       "transfer(address,uint256)" : {
          "notice" : "send `_value` token to `_to` from `msg.sender`"
       },
       "transferFrom(address,address,uint256)" : {
          "notice" : "send `_value` token to `_to` from `_from` on the condition it is approved by `_from`"
+      },
+      "transferOwnership(address)" : {
+         "notice" : "Transfer ownership from `owner` to `newOwner`"
       }
    }
 }

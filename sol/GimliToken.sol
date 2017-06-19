@@ -4,6 +4,7 @@ import "Ownable.sol";
 
 pragma solidity ^0.4.11;
 
+/// @title Gimli Token Contract.
 contract GimliToken is ERC20, SafeMath, Ownable {
 
 
@@ -51,8 +52,8 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     function transfer(address _to, uint256 _value) {
         require(balances[msg.sender] >= _value && _value > 0);
 
-        updateBalance(msg.sender, -_value);
-        updateBalance(_to, _value);
+        removeFromBalance(msg.sender, _value);
+        addToBalance(_to, _value);
         Transfer(msg.sender, _to, _value);
     }
 
@@ -64,8 +65,8 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     function transferFrom(address _from, address _to, uint256 _value) {
         require(balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0);
 
-        updateBalance(_from, -_value);
-        updateBalance(_to, _value);
+        removeFromBalance(_from, _value);
+        addToBalance(_to, _value);
         allowed[_from][msg.sender] -= _value;
         Transfer(_from, _to, _value);
     }
@@ -79,9 +80,18 @@ contract GimliToken is ERC20, SafeMath, Ownable {
         Approval(msg.sender, _spender, _value);
     }
 
-    // maintains `holders` array for `getBalanceByIndex()` function
-    function updateBalance(address _holder, uint256 delta) internal {
+    function addToBalance(address _holder, uint256 delta) internal {
         balances[_holder] = safeAdd(balances[_holder], delta);
+        updateHolders(_holder);
+    }
+
+    function removeFromBalance(address _holder, uint256 delta) internal {
+        balances[_holder] = safeSub(balances[_holder], delta);
+        updateHolders(_holder);
+    }
+
+    // maintains `holders` array for `getBalanceByIndex()` function
+    function updateHolders(address _holder) internal {
         assert(balances[_holder] >= 0);
 
         // New holder
@@ -109,12 +119,14 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     **** Getters ****
     ****************/
 
+    /// @notice Get balance of an address
     /// @param _owner The address from which the balance will be retrieved
     /// @return The balance
     function balanceOf(address _owner) constant returns (uint256 balance) {
         return balances[_owner];
     }
 
+    /// @notice Get tokens allowed to spent by `_spender`
     /// @param _owner The address of the account owning tokens
     /// @param _spender The address of the account able to transfer the tokens
     /// @return Amount of remaining tokens allowed to spent
@@ -122,13 +134,15 @@ contract GimliToken is ERC20, SafeMath, Ownable {
       return allowed[_owner][_spender];
     }
 
+    /// @notice Get holder count
     /// @return holder count
     function getHolderCount() returns (uint256) {
         return holderCount;
     }
 
+    /// @notice Get balance by index
     /// @param _holderIndex The holder index
-    /// @return balance by holder index
+    /// @return The address of the holder and his balance
     function getBalanceByIndex(uint256 _holderIndex) returns (address, uint256) {
         return (holders[_holderIndex], balanceOf(holders[_holderIndex]));
     }

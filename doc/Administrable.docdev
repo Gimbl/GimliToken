@@ -1,3 +1,20 @@
 {
-   "methods" : {}
+   "methods" : {
+      "addAdministrators(address)" : {
+         "params" : {
+            "_adminAddess" : "The new administrator address"
+         }
+      },
+      "removeAdministrators(address)" : {
+         "params" : {
+            "_adminAddess" : "The administrator address to remove"
+         }
+      },
+      "transferOwnership(address)" : {
+         "params" : {
+            "newOwner" : "The new contract owner"
+         }
+      }
+   },
+   "title" : "Manages Gimli administrators."
 }

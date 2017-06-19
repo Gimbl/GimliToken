@@ -1,5 +1,10 @@
 {
    "methods" : {
+      "addAdministrators(address)" : {
+         "params" : {
+            "_adminAddess" : "The new administrator address"
+         }
+      },
       "allowance(address,address)" : {
          "params" : {
             "_owner" : "The address of the account owning tokens",
@@ -14,49 +19,79 @@
          },
          "return" : "Whether the approval was successful or not"
       },
+      "authorizeStreamer(address,address,uint256,uint256,uint256)" : {
+         "details" : "`_streamerFeesPpm + _gimliFeesPpm` must be equal to 1000",
+         "params" : {
+            "_contractAddress" : "Contract address (GimliBetting, GimliVoting, etc.)",
+            "_gimliFeesPpm" : "Share of fees for Gimli (ppm, ex: 5 for 0.5%)",
+            "_maxPrice" : "The maximum price a Streamer can claim to users for a game",
+            "_streamerAddress" : "Authorized address",
+            "_streamerFeesPpm" : "Share of fees for the streamer (ppm, ex: 5 for 0.5%)"
+         }
+      },
       "balanceOf(address)" : {
          "params" : {
             "_owner" : "The address from which the balance will be retrieved"
          },
          "return" : "The balance"
       },
+      "claimGMLPayment(address,address,uint256)" : {
+         "details" : "`msg.sender` and `_streamerAddress` must be authorized with the function `authorizeStreamer()`. `_userAddress` must be the origin of the transaction.",
+         "params" : {
+            "_price" : "Price paid by `_userAddress`",
+            "_streamerAddress" : "Streamer address who created the game",
+            "_userAddress" : "User address who pays the game"
+         }
+      },
       "getAllowedContracByIndex(address,uint256)" : {
          "params" : {
-            "_contractIndex" : "The contract index",
+            "_contractIndex" : "The contract address position in `authorizedStreamerAllowances[_streamerAddress].allowedContracts`",
             "_streamerAddress" : "The streamer address"
          },
-         "return" : "authorized fees and max price allowed"
+         "return" : "Share of fees for streamer and Gimli, the maximum price allowed and a boolean to indicate if the allowance exists."
       },
       "getAllowedContract(address,address)" : {
          "params" : {
             "_contractAddress" : "The contract address",
             "_streamerAddress" : "The streamer address"
          },
-         "return" : "authorized fees and max price allowed"
+         "return" : "Share of fees for streamer and Gimli, the maximum price allowed and a boolean to indicate if the allowance exists."
       },
       "getAuthorizedStreamer(address)" : {
+         "details" : "The number of contracts can be greater than zero even if the streamer is not anymore authorized.",
          "params" : {
             "_streamerAddress" : "The streamer address"
          },
-         "return" : "authorized streamer"
+         "return" : "A boolean to indicate if the streamer is authorized and the number of contract allowed."
       },
       "getAuthorizedStreamerByIndex(uint256)" : {
+         "details" : "The number of contracts can be greater than zero even if the streamer is not anymore authorized.",
          "params" : {
-            "_streamerIndex" : "The contract index"
+            "_streamerIndex" : "The streamer address position in `authorizedStreamers`"
          },
-         "return" : "authorized streamer"
+         "return" : "The streamer address, a boolean to indicate if the streamer is authorized and the number of contract allowed."
       },
       "getAuthorizedStreamerCount()" : {
-         "return" : "authorized contract count"
+         "return" : "Authorized streamers count"
       },
       "getBalanceByIndex(uint256)" : {
          "params" : {
             "_holderIndex" : "The holder index"
          },
-         "return" : "balance by holder index"
+         "return" : "The address of the holder and his balance"
       },
       "getHolderCount()" : {
          "return" : "holder count"
+      },
+      "removeAdministrators(address)" : {
+         "params" : {
+            "_adminAddess" : "The administrator address to remove"
+         }
+      },
+      "revokeStreamer(address)" : {
+         "params" : {
+            "_streamerAddress" : "Streamer address to revoke"
+         }
       },
       "transfer(address,uint256)" : {
          "params" : {
@@ -72,6 +107,17 @@
             "_value" : "The amount of token to be transferred"
          },
          "return" : "Whether the transfer was successful or not"
+      },
+      "transferOwnership(address)" : {
+         "params" : {
+            "newOwner" : "The new contract owner"
+         }
+      },
+      "withdrawalCrowdsale(address)" : {
+         "params" : {
+            "_to" : "The withdrawal destination"
+         }
       }
-   }
+   },
+   "title" : "Main Gimli contract."
 }
