@@ -6,6 +6,7 @@ pragma solidity ^0.4.11;
 
 contract GimliToken is ERC20, SafeMath, Ownable {
 
+
     /*************************
     **** Global variables ****
     *************************/
@@ -47,14 +48,12 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /// @param _to The address of the recipient
     /// @param _value The amount of token to be transferred
     /// @return Whether the transfer was successful or not
-    function transfer(address _to, uint256 _value) returns (bool ok) {
+    function transfer(address _to, uint256 _value) {
         require(balances[msg.sender] >= _value && _value > 0);
 
         updateBalance(msg.sender, -_value);
         updateBalance(_to, _value);
         Transfer(msg.sender, _to, _value);
-
-        return true; // success
     }
 
     /// @notice send `_value` token to `_to` from `_from` on the condition it is approved by `_from`
@@ -62,26 +61,22 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /// @param _to The address of the recipient
     /// @param _value The amount of token to be transferred
     /// @return Whether the transfer was successful or not
-    function transferFrom(address _from, address _to, uint256 _value) returns (bool ok) {
+    function transferFrom(address _from, address _to, uint256 _value) {
         require(balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0);
 
         updateBalance(_from, -_value);
         updateBalance(_to, _value);
         allowed[_from][msg.sender] -= _value;
         Transfer(_from, _to, _value);
-
-        return true; // success
     }
 
     /// @notice `msg.sender` approves `_spender` to spend `_value` tokens
     /// @param _spender The address of the account able to transfer the tokens
     /// @param _value The amount of tokens to be approved for transfer
     /// @return Whether the approval was successful or not
-    function approve(address _spender, uint256 _value) returns (bool ok) {
+    function approve(address _spender, uint256 _value) {
         allowed[msg.sender][_spender] = _value;
         Approval(msg.sender, _spender, _value);
-
-        return true; // success
     }
 
     // maintains `holders` array for `getBalanceByIndex()` function
