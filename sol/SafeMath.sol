@@ -1,6 +1,5 @@
 pragma solidity ^0.4.11;
 
-
 // @title Math operations with safety checks
 contract SafeMath {
   function safeMul(uint a, uint b) internal returns (uint) {

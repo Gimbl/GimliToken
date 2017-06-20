@@ -1,8 +1,8 @@
-import "SafeMath.sol";
-import "ERC20.sol";
-import "Ownable.sol";
-
 pragma solidity ^0.4.11;
+
+import "./SafeMath.sol";
+import "./ERC20.sol";
+import "./Ownable.sol";
 
 /// @title Gimli Token Contract.
 contract GimliToken is ERC20, SafeMath, Ownable {

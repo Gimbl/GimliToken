@@ -1,6 +1,6 @@
 pragma solidity ^0.4.11;
 
-import "Ownable.sol";
+import "./Ownable.sol";
 
 /// @title Manages Gimli administrators.
 contract Administrable is Ownable {
