@@ -25,7 +25,7 @@ def gen_md(contract_name):
 
 """.format(docdev["title"])
 
-    for method_name, method_info in docdev['methods'].items():
+    for method_name, method_info in sorted(docdev['methods'].items(), key=lambda x: x[0]):
         docmd += """### `{}`
 
 """.format(method_name)

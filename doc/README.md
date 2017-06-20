@@ -1,64 +1,25 @@
 # Main Gimli contract.
 
-### `getAllowedContracByIndex(address,uint256)`
+### `addAdministrators(address)`
 
-Get information about a contract allowed to a streamer
+Add an administrator
 
 **Parameters:**
 
-  - `_contractIndex`: The contract address position in `authorizedStreamerAllowances[_streamerAddress].allowedContracts`
-  - `_streamerAddress`: The streamer address
+  - `_adminAddess`: The new administrator address
+
+### `allowance(address,address)`
+
+Get tokens allowed to spent by `_spender`
+
+**Parameters:**
+
+  - `_owner`: The address of the account owning tokens
+  - `_spender`: The address of the account able to transfer the tokens
 
 **Returns:**
 
-Share of fees for streamer and Gimli, the maximum price allowed and a boolean to indicate if the allowance exists.
-
-### `authorizeStreamer(address,address,uint256,uint256,uint256)`
-
-authorize an address to create Gimli game (bet, vote, etc.)
-
-`_streamerFeesPpm + _gimliFeesPpm` must be equal to 1000
-
-**Parameters:**
-
-  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
-  - `_maxPrice`: The maximum price a Streamer can claim to users for a game
-  - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
-  - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
-  - `_streamerAddress`: Authorized address
-
-### `revokeStreamer(address)`
-
-Revoke a streamer for all contracts
-
-**Parameters:**
-
-  - `_streamerAddress`: Streamer address to revoke
-
-### `balanceOf(address)`
-
-Get balance of an address
-
-**Parameters:**
-
-  - `_owner`: The address from which the balance will be retrieved
-
-**Returns:**
-
-The balance
-
-### `getAllowedContract(address,address)`
-
-Get information about a contract allowed to a streamer
-
-**Parameters:**
-
-  - `_contractAddress`: The contract address
-  - `_streamerAddress`: The streamer address
-
-**Returns:**
-
-Share of fees for streamer and Gimli, the maximum price allowed and a boolean to indicate if the allowance exists.
+Amount of remaining tokens allowed to spent
 
 ### `approve(address,uint256)`
 
@@ -73,52 +34,31 @@ Share of fees for streamer and Gimli, the maximum price allowed and a boolean to
 
 Whether the approval was successful or not
 
-### `getBalanceByIndex(uint256)`
+### `authorizeStreamer(address,address,uint256,uint256,uint256)`
 
-Get balance by index
+authorize an address to create Gimli game (bet, vote, etc.)
+
+`_streamerFeesPpm + _gimliFeesPpm` must be equal to 1000
 
 **Parameters:**
 
-  - `_holderIndex`: The holder index
+  - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
+  - `_streamerAddress`: Authorized address
+  - `_maxPrice`: The maximum price a Streamer can claim to users for a game
+  - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
+  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
+
+### `balanceOf(address)`
+
+Get balance of an address
+
+**Parameters:**
+
+  - `_owner`: The address from which the balance will be retrieved
 
 **Returns:**
 
-The address of the holder and his balance
-
-### `transferFrom(address,address,uint256)`
-
-send `_value` token to `_to` from `_from` on the condition it is approved by `_from`
-
-**Parameters:**
-
-  - `_to`: The address of the recipient
-  - `_value`: The amount of token to be transferred
-  - `_from`: The address of the sender
-
-**Returns:**
-
-Whether the transfer was successful or not
-
-### `withdrawalCrowdsale(address)`
-
-Send GML payments  to `_to`
-
-**Parameters:**
-
-  - `_to`: The withdrawal destination
-
-### `transfer(address,uint256)`
-
-send `_value` token to `_to` from `msg.sender`
-
-**Parameters:**
-
-  - `_to`: The address of the recipient
-  - `_value`: The amount of token to be transferred
-
-**Returns:**
-
-Whether the transfer was successful or not
+The balance
 
 ### `claimGMLPayment(address,address,uint256)`
 
@@ -132,43 +72,31 @@ Called by a Gimli contract to claim game payment
   - `_streamerAddress`: Streamer address who created the game
   - `_price`: Price paid by `_userAddress`
 
-### `getAuthorizedStreamerByIndex(uint256)`
+### `getAllowedContracByIndex(address,uint256)`
 
-Return information about a streamer
-
-The number of contracts can be greater than zero even if the streamer is not anymore authorized.
+Get information about a contract allowed to a streamer
 
 **Parameters:**
 
-  - `_streamerIndex`: The streamer address position in `authorizedStreamers`
+  - `_streamerAddress`: The streamer address
+  - `_contractIndex`: The contract address position in `authorizedStreamerAllowances[_streamerAddress].allowedContracts`
 
 **Returns:**
 
-The streamer address, a boolean to indicate if the streamer is authorized and the number of contract allowed.
+Share of fees for streamer and Gimli, the maximum price allowed and a boolean to indicate if the allowance exists.
 
-### `addAdministrators(address)`
+### `getAllowedContract(address,address)`
 
-Add an administrator
+Get information about a contract allowed to a streamer
 
 **Parameters:**
 
-  - `_adminAddess`: The new administrator address
-
-### `getHolderCount()`
-
-Get holder count
+  - `_streamerAddress`: The streamer address
+  - `_contractAddress`: The contract address
 
 **Returns:**
 
-holder count
-
-### `getAuthorizedStreamerCount()`
-
-Get authorized streamers count
-
-**Returns:**
-
-Authorized streamers count
+Share of fees for streamer and Gimli, the maximum price allowed and a boolean to indicate if the allowance exists.
 
 ### `getAuthorizedStreamer(address)`
 
@@ -184,18 +112,90 @@ The number of contracts can be greater than zero even if the streamer is not any
 
 A boolean to indicate if the streamer is authorized and the number of contract allowed.
 
-### `allowance(address,address)`
+### `getAuthorizedStreamerByIndex(uint256)`
 
-Get tokens allowed to spent by `_spender`
+Return information about a streamer
+
+The number of contracts can be greater than zero even if the streamer is not anymore authorized.
 
 **Parameters:**
 
-  - `_owner`: The address of the account owning tokens
-  - `_spender`: The address of the account able to transfer the tokens
+  - `_streamerIndex`: The streamer address position in `authorizedStreamers`
 
 **Returns:**
 
-Amount of remaining tokens allowed to spent
+The streamer address, a boolean to indicate if the streamer is authorized and the number of contract allowed.
+
+### `getAuthorizedStreamerCount()`
+
+Get authorized streamers count
+
+**Returns:**
+
+Authorized streamers count
+
+### `getBalanceByIndex(uint256)`
+
+Get balance by index
+
+**Parameters:**
+
+  - `_holderIndex`: The holder index
+
+**Returns:**
+
+The address of the holder and his balance
+
+### `getHolderCount()`
+
+Get holder count
+
+**Returns:**
+
+holder count
+
+### `removeAdministrators(address)`
+
+Remove an administrator
+
+**Parameters:**
+
+  - `_adminAddess`: The administrator address to remove
+
+### `revokeStreamer(address)`
+
+Revoke a streamer for all contracts
+
+**Parameters:**
+
+  - `_streamerAddress`: Streamer address to revoke
+
+### `transfer(address,uint256)`
+
+send `_value` token to `_to` from `msg.sender`
+
+**Parameters:**
+
+  - `_to`: The address of the recipient
+  - `_value`: The amount of token to be transferred
+
+**Returns:**
+
+Whether the transfer was successful or not
+
+### `transferFrom(address,address,uint256)`
+
+send `_value` token to `_to` from `_from` on the condition it is approved by `_from`
+
+**Parameters:**
+
+  - `_to`: The address of the recipient
+  - `_value`: The amount of token to be transferred
+  - `_from`: The address of the sender
+
+**Returns:**
+
+Whether the transfer was successful or not
 
 ### `transferOwnership(address)`
 
@@ -205,11 +205,11 @@ Transfer ownership from `owner` to `newOwner`
 
   - `newOwner`: The new contract owner
 
-### `removeAdministrators(address)`
+### `withdrawalCrowdsale(address)`
 
-Remove an administrator
+Send GML payments  to `_to`
 
 **Parameters:**
 
-  - `_adminAddess`: The administrator address to remove
+  - `_to`: The withdrawal destination
 
