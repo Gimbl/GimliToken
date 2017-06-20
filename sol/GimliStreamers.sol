@@ -1,8 +1,8 @@
 pragma solidity ^0.4.11;
 
-import "./SafeMath.sol";
-import "./GimliToken.sol";
-import "./Administrable.sol";
+import "SafeMath.sol";
+import "GimliToken.sol";
+import "Administrable.sol";
 
 /// @title Gimli Crowdsale Contract.
 /// @dev This contract manages streamer authorizations. To make a streamer able to create

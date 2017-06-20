@@ -49,4 +49,3 @@ In order to deploy Gimli Smart Contract do the following:
 ## TODO ##
 
 - Write tests
-- Clean and add comments

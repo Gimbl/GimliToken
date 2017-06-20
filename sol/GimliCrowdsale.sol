@@ -1,7 +1,7 @@
 pragma solidity ^0.4.11;
 
-import "./SafeMath.sol";
-import "./GimliToken.sol";
+import 'SafeMath.sol';
+import "GimliToken.sol";
 
 /// @title Gimli Crowdsale Contract.
 contract GimliCrowdsale is SafeMath, GimliToken {

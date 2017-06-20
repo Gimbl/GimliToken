@@ -1,7 +1,7 @@
 pragma solidity ^0.4.11;
 
-import "./GimliStreamers.sol";
-import "./GimliCrowdsale.sol";
+import "GimliStreamers.sol";
+import "GimliCrowdsale.sol";
 
 /// @title Main Gimli contract.
 contract Gimli is GimliStreamers, GimliCrowdsale {

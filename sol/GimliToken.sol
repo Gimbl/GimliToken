@@ -1,8 +1,8 @@
 pragma solidity ^0.4.11;
 
-import "./SafeMath.sol";
-import "./ERC20.sol";
-import "./Ownable.sol";
+import "SafeMath.sol";
+import "ERC20.sol";
+import "Ownable.sol";
 
 /// @title Gimli Token Contract.
 contract GimliToken is ERC20, SafeMath, Ownable {
@@ -90,28 +90,35 @@ contract GimliToken is ERC20, SafeMath, Ownable {
         updateHolders(_holder);
     }
 
-    // maintains `holders` array for `getBalanceByIndex()` function
+    // Maintains `holders` array for `getHolderCount()` and `getBalanceByIndex()` functions.
+    // TODO: Is these functions worth spent gas ?
     function updateHolders(address _holder) internal {
         assert(balances[_holder] >= 0);
+
+        // Start from 1 to not confuse with default value
+        if (holders.length == 0) {
+            holders.push(address(0));
+        }
 
         // New holder
         if (holderIDs[_holder] == 0 && balances[_holder] > 0) {
             holders.push(_holder);
             holderCount = safeAdd(holderCount, 1);
-            holderIDs[_holder] = holderCount; // Start from 1 to not confuse with default value
+            holderIDs[_holder] = holderCount;
         }
 
         // Clean zero balances
         if (balances[_holder] == 0) {
             var holderID = holderIDs[_holder];
+            address lastHolder = holders[holderCount];
+            // Move last holder to the deleted position
+            holders[holderID] = lastHolder;
+            // Update ID of the moved holder
+            holderIDs[lastHolder] = holderID;
+            // Delete last holder
+            delete holders[holderCount]; // delete lastHolder ?
             // Decremente holder count
             holderCount = safeSub(holderCount, 1);
-            // Move last holder to the deleted position
-            holders[holderID] = holders[holderCount];
-            // Update ID of the moved holder
-            holderIDs[holders[holderCount]] = holderID;
-            // Delete last holder
-            delete holders[holderCount];
         }
     }
 
