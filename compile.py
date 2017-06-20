@@ -78,7 +78,7 @@ sh.solc("Gimli.sol", userdoc=True, devdoc=True, overwrite=True, output_dir=temp_
 os.rename("{}/Gimli.docuser".format(temp_dir), "../doc/Gimli.docuser")
 os.rename("{}/Gimli.docdev".format(temp_dir), "../doc/Gimli.docdev")
 
-with open("../doc/Gimli.md", "w+") as fp:
+with open("../doc/README.md", "w+") as fp:
     fp.write(gen_md("../doc/Gimli"))
 
 shutil.rmtree(temp_dir)
