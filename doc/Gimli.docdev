@@ -43,36 +43,12 @@
             "_userAddress" : "User address who pays the game"
          }
       },
-      "getAllowedContracByIndex(address,uint256)" : {
-         "params" : {
-            "_contractIndex" : "The contract address position in `authorizedStreamerAllowances[_streamerAddress].allowedContracts`",
-            "_streamerAddress" : "The streamer address"
-         },
-         "return" : "Share of fees for streamer and Gimli, the maximum price allowed and a boolean to indicate if the allowance exists."
-      },
       "getAllowedContract(address,address)" : {
          "params" : {
             "_contractAddress" : "The contract address",
             "_streamerAddress" : "The streamer address"
          },
-         "return" : "Share of fees for streamer and Gimli, the maximum price allowed and a boolean to indicate if the allowance exists."
-      },
-      "getAuthorizedStreamer(address)" : {
-         "details" : "The number of contracts can be greater than zero even if the streamer is not anymore authorized.",
-         "params" : {
-            "_streamerAddress" : "The streamer address"
-         },
-         "return" : "A boolean to indicate if the streamer is authorized and the number of contract allowed."
-      },
-      "getAuthorizedStreamerByIndex(uint256)" : {
-         "details" : "The number of contracts can be greater than zero even if the streamer is not anymore authorized.",
-         "params" : {
-            "_streamerIndex" : "The streamer address position in `authorizedStreamers`"
-         },
-         "return" : "The streamer address, a boolean to indicate if the streamer is authorized and the number of contract allowed."
-      },
-      "getAuthorizedStreamerCount()" : {
-         "return" : "Authorized streamers count"
+         "return" : "Share of fees for streamer and Gimli, the maximum price authorized and a boolean to indicate if the permission exists."
       },
       "removeAdministrators(address)" : {
          "params" : {

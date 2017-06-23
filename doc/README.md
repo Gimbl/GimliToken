@@ -42,11 +42,11 @@ authorize an address to create Gimli game (bet, vote, etc.)
 
 **Parameters:**
 
-  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
-  - `_maxPrice`: The maximum price a Streamer can claim to users for a game
+  - `_streamerAddress`: Authorized address
   - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
   - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
-  - `_streamerAddress`: Authorized address
+  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
+  - `_maxPrice`: The maximum price a Streamer can claim to users for a game
 
 ### `balanceOf(address)`
 
@@ -68,71 +68,22 @@ Called by a Gimli contract to claim game payment
 
 **Parameters:**
 
+  - `_streamerAddress`: Streamer address who created the game
   - `_userAddress`: User address who pays the game
   - `_price`: Price paid by `_userAddress`
-  - `_streamerAddress`: Streamer address who created the game
-
-### `getAllowedContracByIndex(address,uint256)`
-
-Get information about a contract allowed to a streamer
-
-**Parameters:**
-
-  - `_contractIndex`: The contract address position in `authorizedStreamerAllowances[_streamerAddress].allowedContracts`
-  - `_streamerAddress`: The streamer address
-
-**Returns:**
-
-Share of fees for streamer and Gimli, the maximum price allowed and a boolean to indicate if the allowance exists.
 
 ### `getAllowedContract(address,address)`
 
-Get information about a contract allowed to a streamer
+Get information about a contract authorized for a streamer
 
 **Parameters:**
 
+  - `_streamerAddress`: The streamer address
   - `_contractAddress`: The contract address
-  - `_streamerAddress`: The streamer address
 
 **Returns:**
 
-Share of fees for streamer and Gimli, the maximum price allowed and a boolean to indicate if the allowance exists.
-
-### `getAuthorizedStreamer(address)`
-
-Return information about a streamer
-
-The number of contracts can be greater than zero even if the streamer is not anymore authorized.
-
-**Parameters:**
-
-  - `_streamerAddress`: The streamer address
-
-**Returns:**
-
-A boolean to indicate if the streamer is authorized and the number of contract allowed.
-
-### `getAuthorizedStreamerByIndex(uint256)`
-
-Return information about a streamer
-
-The number of contracts can be greater than zero even if the streamer is not anymore authorized.
-
-**Parameters:**
-
-  - `_streamerIndex`: The streamer address position in `authorizedStreamers`
-
-**Returns:**
-
-The streamer address, a boolean to indicate if the streamer is authorized and the number of contract allowed.
-
-### `getAuthorizedStreamerCount()`
-
-Get authorized streamers count
-
-**Returns:**
-
-Authorized streamers count
+Share of fees for streamer and Gimli, the maximum price authorized and a boolean to indicate if the permission exists.
 
 ### `removeAdministrators(address)`
 
@@ -156,8 +107,8 @@ send `_value` token to `_to` from `msg.sender`
 
 **Parameters:**
 
-  - `_value`: The amount of token to be transferred
   - `_to`: The address of the recipient
+  - `_value`: The amount of token to be transferred
 
 **Returns:**
 
@@ -169,9 +120,9 @@ send `_value` token to `_to` from `_from` on the condition it is approved by `_f
 
 **Parameters:**
 
-  - `_value`: The amount of token to be transferred
   - `_from`: The address of the sender
   - `_to`: The address of the recipient
+  - `_value`: The amount of token to be transferred
 
 **Returns:**
 

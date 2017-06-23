@@ -21,20 +21,8 @@
       "closeCrowdsale()" : {
          "notice" : "returns non-sold tokens to owner"
       },
-      "getAllowedContracByIndex(address,uint256)" : {
-         "notice" : "Get information about a contract allowed to a streamer"
-      },
       "getAllowedContract(address,address)" : {
-         "notice" : "Get information about a contract allowed to a streamer"
-      },
-      "getAuthorizedStreamer(address)" : {
-         "notice" : "Return information about a streamer"
-      },
-      "getAuthorizedStreamerByIndex(uint256)" : {
-         "notice" : "Return information about a streamer"
-      },
-      "getAuthorizedStreamerCount()" : {
-         "notice" : "Get authorized streamers count"
+         "notice" : "Get information about a contract authorized for a streamer"
       },
       "removeAdministrators(address)" : {
          "notice" : "Remove an administrator"

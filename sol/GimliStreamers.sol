@@ -13,21 +13,22 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
 
     struct Streamer {
         bool       authorized;
-        mapping    (address => contractAllowance) allowances; // Contract allowances indexed by contract address
-        address[]  allowedContracts; // List of allowed contracts
+        mapping    (address => contractPermissions) permissions; // Contract permissions indexed by contract address
         bool       exists;
     }
 
-    struct contractAllowance {
+    struct contractPermissions {
         uint256    streamerFeesPpm; // ppm, ex: 5 for 0.5%
         uint256    gimliFeesPpm; // ppm, ex: 5 for 0.5%
         uint256    maxPrice;
         bool       exists;
     }
 
+    event StreamerAuthorized(address indexed streamerAddress, address indexed contractAddress, uint maxPrice);
+    event StreamerRevoked(address indexed streamerAddress);
+
     /// Authorized streamers
-    mapping (address => Streamer) authorizedStreamerAllowances;
-    address[] authorizedStreamers;
+    mapping (address => Streamer) authorizedStreamers;
 
     /// @notice authorize an address to create Gimli game (bet, vote, etc.)
     /// @param _streamerAddress Authorized address
@@ -46,29 +47,25 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
         // The whole GML payment must be shared
         require(safeAdd(_streamerFeesPpm, _gimliFeesPpm) == 1000);
 
-        if (!authorizedStreamerAllowances[_streamerAddress].exists) {
-             authorizedStreamers.push(_streamerAddress);
-        }
-
-        Streamer streamer = authorizedStreamerAllowances[_streamerAddress];
-        contractAllowance allowance = streamer.allowances[_contractAddress];
-
-        if (!allowance.exists) {
-            streamer.allowedContracts.push(_contractAddress);
-        }
+        Streamer streamer = authorizedStreamers[_streamerAddress];
+        contractPermissions permissions = streamer.permissions[_contractAddress];
 
         streamer.authorized = true;
         streamer.exists = true;
-        allowance.streamerFeesPpm = _streamerFeesPpm;
-        allowance.gimliFeesPpm = _gimliFeesPpm;
-        allowance.maxPrice = _maxPrice;
-        allowance.exists = true;
+        permissions.streamerFeesPpm = _streamerFeesPpm;
+        permissions.gimliFeesPpm = _gimliFeesPpm;
+        permissions.maxPrice = _maxPrice;
+        permissions.exists = true;
+
+        StreamerAuthorized(_streamerAddress, _contractAddress, _maxPrice);
     }
 
     /// @notice Revoke a streamer for all contracts
     /// @param _streamerAddress Streamer address to revoke
     function revokeStreamer(address _streamerAddress) onlyAdministrator {
-        authorizedStreamerAllowances[_streamerAddress].authorized = false;
+        authorizedStreamers[_streamerAddress].authorized = false;
+
+        StreamerRevoked(_streamerAddress);
     }
 
     /// @notice Called by a Gimli contract to claim game payment
@@ -81,12 +78,12 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
     function claimGMLPayment(address _streamerAddress, address _userAddress, uint256 _price) {
 
         // only authorized streamer can claim payment
-        require(authorizedStreamerAllowances[_streamerAddress].authorized);
+        require(authorizedStreamers[_streamerAddress].authorized);
 
-        contractAllowance allowance = authorizedStreamerAllowances[_streamerAddress].allowances[msg.sender];
+        contractPermissions permissions = authorizedStreamers[_streamerAddress].permissions[msg.sender];
 
-        // only allowed contract can claim payment
-        require(allowance.maxPrice >= _price);
+        // only authorized contract can claim payment
+        require(permissions.maxPrice >= _price);
 
         // only _user can be the origin of this transaction
         require(tx.origin == _userAddress);
@@ -95,8 +92,8 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
         require(balances[_userAddress] >= _price);
 
         // Calculates fees
-        uint256 gimliFees = safeDiv(safeMul(allowance.gimliFeesPpm, _price), 1000);
-        uint256 streamerFees = safeDiv(safeMul(allowance.streamerFeesPpm, _price), 1000);
+        uint256 gimliFees = safeDiv(safeMul(permissions.gimliFeesPpm, _price), 1000);
+        uint256 streamerFees = safeDiv(safeMul(permissions.streamerFeesPpm, _price), 1000);
 
         // update balances
         balances[_userAddress] = safeSub(balances[_userAddress], _price);
@@ -107,54 +104,15 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
         Transfer(_streamerAddress, owner, streamerFees);
     }
 
-    /// @notice Get authorized streamers count
-    /// @return Authorized streamers count
-    function getAuthorizedStreamerCount() returns (uint256) {
-        return authorizedStreamers.length;
-    }
-
-    /// @notice Return information about a streamer
-    /// @param _streamerAddress The streamer address
-    /// @return A boolean to indicate if the streamer is authorized and the
-    /// number of contract allowed.
-    /// @dev The number of contracts can be greater than zero even if the streamer
-    /// is not anymore authorized.
-    function getAuthorizedStreamer(address _streamerAddress) returns (bool, uint256) {
-        return (authorizedStreamerAllowances[_streamerAddress].authorized,
-                authorizedStreamerAllowances[_streamerAddress].allowedContracts.length);
-    }
-
-    /// @notice Return information about a streamer
-    /// @param _streamerIndex The streamer address position in `authorizedStreamers`
-    /// @return The streamer address, a boolean to indicate if the streamer is
-    /// authorized and the number of contract allowed.
-    /// @dev The number of contracts can be greater than zero even if the streamer
-    /// is not anymore authorized.
-    function getAuthorizedStreamerByIndex(uint256 _streamerIndex) returns (address, bool, uint256) {
-        bool authorized;
-        uint allowedCountractCount;
-        (authorized, allowedCountractCount) = getAuthorizedStreamer(authorizedStreamers[_streamerIndex]);
-        return (authorizedStreamers[_streamerIndex], authorized, allowedCountractCount);
-    }
-
-    /// @notice Get information about a contract allowed to a streamer
+    /// @notice Get information about a contract authorized for a streamer
     /// @param _streamerAddress The streamer address
     /// @param _contractAddress The contract address
-    /// @return Share of fees for streamer and Gimli, the maximum price allowed
-    /// and a boolean to indicate if the allowance exists.
+    /// @return Share of fees for streamer and Gimli, the maximum price authorized
+    /// and a boolean to indicate if the permission exists.
     function getAllowedContract(address _streamerAddress, address _contractAddress)
         returns (uint256, uint256, uint256, bool) {
-        contractAllowance a = authorizedStreamerAllowances[_streamerAddress].allowances[_contractAddress];
+        contractPermissions a = authorizedStreamers[_streamerAddress].permissions[_contractAddress];
         return (a.streamerFeesPpm, a.gimliFeesPpm, a.maxPrice, a.exists);
     }
 
-    /// @notice Get information about a contract allowed to a streamer
-    /// @param _streamerAddress The streamer address
-    /// @param _contractIndex The contract address position in `authorizedStreamerAllowances[_streamerAddress].allowedContracts`
-    /// @return Share of fees for streamer and Gimli, the maximum price allowed
-    /// and a boolean to indicate if the allowance exists.
-    function getAllowedContracByIndex(address _streamerAddress, uint256 _contractIndex)
-        returns (uint256, uint256, uint256, bool) {
-        return getAllowedContract(_streamerAddress, authorizedStreamerAllowances[_streamerAddress].allowedContracts[_contractIndex]);
-    }
 }
