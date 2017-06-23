@@ -24,11 +24,6 @@ contract GimliToken is ERC20, SafeMath, Ownable {
 
     /// balances indexed by address
     mapping (address => uint256) balances;
-    // holder position in `holders` indexed by address
-    mapping (address => uint256) holderIDs;
-    // list of holders
-    address[] holders;
-    uint256 holderCount; // because holders.length doesn't change after a delete
 
     /// allowances indexed by owner and spender
     mapping (address => mapping (address => uint256)) allowed;
@@ -54,8 +49,8 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     function transfer(address _to, uint256 _value) {
         require(balances[msg.sender] >= _value && _value > 0);
 
-        removeFromBalance(msg.sender, _value);
-        addToBalance(_to, _value);
+        balances[msg.sender] = safeSub(balances[msg.sender], _value);
+        balances[_to] = safeAdd(balances[_to], _value);
         Transfer(msg.sender, _to, _value);
     }
 
@@ -67,9 +62,9 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     function transferFrom(address _from, address _to, uint256 _value) {
         require(balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0);
 
-        removeFromBalance(_from, _value);
-        addToBalance(_to, _value);
-        allowed[_from][msg.sender] -= _value;
+        balances[_from] = safeSub(balances[_from], _value);
+        balances[_to] = safeAdd(balances[_to], _value);
+        allowed[_from][msg.sender] = safeSub(allowed[_from][msg.sender], _value);
         Transfer(_from, _to, _value);
     }
 
@@ -80,48 +75,6 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     function approve(address _spender, uint256 _value) {
         allowed[msg.sender][_spender] = _value;
         Approval(msg.sender, _spender, _value);
-    }
-
-    function addToBalance(address _holder, uint256 delta) internal {
-        balances[_holder] = safeAdd(balances[_holder], delta);
-        updateHolders(_holder);
-    }
-
-    function removeFromBalance(address _holder, uint256 delta) internal {
-        balances[_holder] = safeSub(balances[_holder], delta);
-        updateHolders(_holder);
-    }
-
-    // Maintains `holders` array for `getHolderCount()` and `getBalanceByIndex()` functions.
-    // TODO: Is these functions worth spent gas ?
-    function updateHolders(address _holder) internal {
-        assert(balances[_holder] >= 0);
-
-        // Start from 1 to not confuse with default value
-        if (holders.length == 0) {
-            holders.push(address(0));
-        }
-
-        // New holder
-        if (holderIDs[_holder] == 0 && balances[_holder] > 0) {
-            holders.push(_holder);
-            holderCount = safeAdd(holderCount, 1);
-            holderIDs[_holder] = holderCount;
-        }
-
-        // Clean zero balances
-        if (balances[_holder] == 0) {
-            var holderID = holderIDs[_holder];
-            address lastHolder = holders[holderCount];
-            // Move last holder to the deleted position
-            holders[holderID] = lastHolder;
-            // Update ID of the moved holder
-            holderIDs[lastHolder] = holderID;
-            // Delete last holder
-            delete holders[holderCount]; // delete lastHolder ?
-            // Decremente holder count
-            holderCount = safeSub(holderCount, 1);
-        }
     }
 
     /****************
@@ -142,18 +95,4 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     function allowance(address _owner, address _spender) constant returns (uint256 remaining) {
       return allowed[_owner][_spender];
     }
-
-    /// @notice Get holder count
-    /// @return holder count
-    function getHolderCount() returns (uint256) {
-        return holderCount;
-    }
-
-    /// @notice Get balance by index
-    /// @param _holderIndex The holder index
-    /// @return The address of the holder and his balance
-    function getBalanceByIndex(uint256 _holderIndex) returns (address, uint256) {
-        return (holders[_holderIndex], balanceOf(holders[_holderIndex]));
-    }
-
 }

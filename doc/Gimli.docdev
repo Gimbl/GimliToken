@@ -74,15 +74,6 @@
       "getAuthorizedStreamerCount()" : {
          "return" : "Authorized streamers count"
       },
-      "getBalanceByIndex(uint256)" : {
-         "params" : {
-            "_holderIndex" : "The holder index"
-         },
-         "return" : "The address of the holder and his balance"
-      },
-      "getHolderCount()" : {
-         "return" : "holder count"
-      },
       "removeAdministrators(address)" : {
          "params" : {
             "_adminAddess" : "The administrator address to remove"

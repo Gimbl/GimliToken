@@ -26,7 +26,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
 
         // update balances
         GMLSold += quantity;
-        addToBalance(msg.sender, quantity);
+        balances[msg.sender] = safeAdd(balances[msg.sender], quantity);
     }
 
     /// @notice returns non-sold tokens to owner
@@ -39,7 +39,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
         crowdsaleClosed = true;
 
         // update balances
-        addToBalance(owner, CROWDSALE_AMOUNT - GMLSold);
+        balances[owner] = safeAdd(balances[owner], CROWDSALE_AMOUNT - GMLSold);
     }
 
     /// @notice Send GML payments  to `_to`

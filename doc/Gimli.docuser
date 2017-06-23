@@ -36,12 +36,6 @@
       "getAuthorizedStreamerCount()" : {
          "notice" : "Get authorized streamers count"
       },
-      "getBalanceByIndex(uint256)" : {
-         "notice" : "Get balance by index"
-      },
-      "getHolderCount()" : {
-         "notice" : "Get holder count"
-      },
       "removeAdministrators(address)" : {
          "notice" : "Remove an administrator"
       },

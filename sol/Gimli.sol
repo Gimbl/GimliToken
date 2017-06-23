@@ -11,7 +11,7 @@ contract Gimli is GimliStreamers, GimliCrowdsale {
         // `msg.sender` becomes the owner
         owner = msg.sender;
         // Give the creator initial tokens
-        addToBalance(msg.sender, TOTAL_SUPPLY - CROWDSALE_AMOUNT);
+        balances[msg.sender] = safeAdd(balances[msg.sender], TOTAL_SUPPLY - CROWDSALE_AMOUNT);
         // For ERC20 compatibility
         totalSupply = TOTAL_SUPPLY;
     }

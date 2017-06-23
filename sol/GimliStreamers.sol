@@ -99,9 +99,9 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
         uint256 streamerFees = safeDiv(safeMul(allowance.streamerFeesPpm, _price), 1000);
 
         // update balances
-        removeFromBalance(_userAddress, _price);
-        addToBalance(owner, gimliFees);
-        addToBalance(_streamerAddress, streamerFees);
+        balances[_userAddress] = safeSub(balances[_userAddress], _price);
+        balances[owner] = safeAdd(balances[owner], gimliFees);
+        balances[_streamerAddress] = safeAdd(balances[_streamerAddress], streamerFees);
     }
 
     /// @notice Get authorized streamers count

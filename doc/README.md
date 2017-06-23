@@ -14,8 +14,8 @@ Get tokens allowed to spent by `_spender`
 
 **Parameters:**
 
-  - `_owner`: The address of the account owning tokens
   - `_spender`: The address of the account able to transfer the tokens
+  - `_owner`: The address of the account owning tokens
 
 **Returns:**
 
@@ -27,8 +27,8 @@ Amount of remaining tokens allowed to spent
 
 **Parameters:**
 
-  - `_value`: The amount of tokens to be approved for transfer
   - `_spender`: The address of the account able to transfer the tokens
+  - `_value`: The amount of tokens to be approved for transfer
 
 **Returns:**
 
@@ -42,11 +42,11 @@ authorize an address to create Gimli game (bet, vote, etc.)
 
 **Parameters:**
 
-  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
-  - `_streamerAddress`: Authorized address
-  - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
-  - `_maxPrice`: The maximum price a Streamer can claim to users for a game
   - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
+  - `_maxPrice`: The maximum price a Streamer can claim to users for a game
+  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
+  - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
+  - `_streamerAddress`: Authorized address
 
 ### `balanceOf(address)`
 
@@ -68,9 +68,9 @@ Called by a Gimli contract to claim game payment
 
 **Parameters:**
 
-  - `_streamerAddress`: Streamer address who created the game
-  - `_userAddress`: User address who pays the game
   - `_price`: Price paid by `_userAddress`
+  - `_userAddress`: User address who pays the game
+  - `_streamerAddress`: Streamer address who created the game
 
 ### `getAllowedContracByIndex(address,uint256)`
 
@@ -91,8 +91,8 @@ Get information about a contract allowed to a streamer
 
 **Parameters:**
 
-  - `_streamerAddress`: The streamer address
   - `_contractAddress`: The contract address
+  - `_streamerAddress`: The streamer address
 
 **Returns:**
 
@@ -134,26 +134,6 @@ Get authorized streamers count
 
 Authorized streamers count
 
-### `getBalanceByIndex(uint256)`
-
-Get balance by index
-
-**Parameters:**
-
-  - `_holderIndex`: The holder index
-
-**Returns:**
-
-The address of the holder and his balance
-
-### `getHolderCount()`
-
-Get holder count
-
-**Returns:**
-
-holder count
-
 ### `removeAdministrators(address)`
 
 Remove an administrator
@@ -176,8 +156,8 @@ send `_value` token to `_to` from `msg.sender`
 
 **Parameters:**
 
-  - `_value`: The amount of token to be transferred
   - `_to`: The address of the recipient
+  - `_value`: The amount of token to be transferred
 
 **Returns:**
 
@@ -189,9 +169,9 @@ send `_value` token to `_to` from `_from` on the condition it is approved by `_f
 
 **Parameters:**
 
-  - `_from`: The address of the sender
-  - `_value`: The amount of token to be transferred
   - `_to`: The address of the recipient
+  - `_value`: The amount of token to be transferred
+  - `_from`: The address of the sender
 
 **Returns:**
 
