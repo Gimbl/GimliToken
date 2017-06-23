@@ -2,7 +2,7 @@
    "methods" : {
       "addAdministrators(address)" : {
          "params" : {
-            "_adminAddess" : "The new administrator address"
+            "_adminAddress" : "The new administrator address"
          }
       },
       "allowance(address,address)" : {
@@ -43,16 +43,22 @@
             "_userAddress" : "User address who pays the game"
          }
       },
-      "getAllowedContract(address,address)" : {
+      "getContractPermissions(address,address)" : {
          "params" : {
             "_contractAddress" : "The contract address",
             "_streamerAddress" : "The streamer address"
          },
          "return" : "Share of fees for streamer and Gimli, the maximum price authorized and a boolean to indicate if the permission exists."
       },
+      "isAuthorizedStreamer(address)" : {
+         "params" : {
+            "_streamerAddress" : "The streamer address"
+         },
+         "return" : "A boolean"
+      },
       "removeAdministrators(address)" : {
          "params" : {
-            "_adminAddess" : "The administrator address to remove"
+            "_adminAddress" : "The administrator address to remove"
          }
       },
       "revokeStreamer(address)" : {

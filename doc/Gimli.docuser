@@ -21,8 +21,11 @@
       "closeCrowdsale()" : {
          "notice" : "returns non-sold tokens to owner"
       },
-      "getAllowedContract(address,address)" : {
+      "getContractPermissions(address,address)" : {
          "notice" : "Get information about a contract authorized for a streamer"
+      },
+      "isAuthorizedStreamer(address)" : {
+         "notice" : "Checks if a streamer is authorized"
       },
       "removeAdministrators(address)" : {
          "notice" : "Remove an administrator"
