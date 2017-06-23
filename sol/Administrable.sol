@@ -12,14 +12,14 @@ contract Administrable is Ownable {
   }
 
   /// @notice Add an administrator
-  /// @param _adminAddess The new administrator address
-  function addAdministrators(address _adminAddess) onlyOwner {
-    administrators[_adminAddess] = true;
+  /// @param _adminAddress The new administrator address
+  function addAdministrators(address _adminAddress) onlyOwner {
+    administrators[_adminAddress] = true;
   }
 
   /// @notice Remove an administrator
-  /// @param _adminAddess The administrator address to remove
-  function removeAdministrators(address _adminAddess) onlyOwner {
-    administrators[_adminAddess] = false;
+  /// @param _adminAddress The administrator address to remove
+  function removeAdministrators(address _adminAddress) onlyOwner {
+    administrators[_adminAddress] = false;
   }
 }
