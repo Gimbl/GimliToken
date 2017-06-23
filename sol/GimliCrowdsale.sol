@@ -11,7 +11,6 @@ contract GimliCrowdsale is SafeMath, GimliToken {
     uint256 public constant CROWDSALE_END_BLOCK = 10**10; // TODO
     uint256 public constant CROWDSALE_PRICE = 10**15 / UNIT; // 0.001 ETH / GML
 
-    uint256 public GMLSold = 0;
     bool public crowdsaleClosed = false;
 
     /// @notice `msg.sender` invest `msg.value`
@@ -22,11 +21,13 @@ contract GimliCrowdsale is SafeMath, GimliToken {
 
         // calculate and check quantity
         uint256 quantity = safeDiv(msg.value, CROWDSALE_PRICE);
-        require(safeAdd(GMLSold, quantity) <= CROWDSALE_AMOUNT);
+        require(safeSub(balances[this], quantity) >= 0);
 
         // update balances
-        GMLSold += quantity;
+        balances[this] = safeSub(balances[this], quantity);
         balances[msg.sender] = safeAdd(balances[msg.sender], quantity);
+
+        Transfer(this, msg.sender, quantity);
     }
 
     /// @notice returns non-sold tokens to owner
@@ -34,12 +35,12 @@ contract GimliCrowdsale is SafeMath, GimliToken {
         // check date
         require(block.number > CROWDSALE_END_BLOCK);
 
-        // owner can close the ICO only once
-        require(!crowdsaleClosed);
-        crowdsaleClosed = true;
-
         // update balances
-        balances[owner] = safeAdd(balances[owner], CROWDSALE_AMOUNT - GMLSold);
+        uint256 unsoldQuantity = balances[this];
+        balances[owner] = safeAdd(balances[owner], unsoldQuantity);
+        balances[this] = 0;
+
+        Transfer(this, owner, unsoldQuantity);
     }
 
     /// @notice Send GML payments  to `_to`

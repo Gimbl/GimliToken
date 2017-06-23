@@ -14,8 +14,8 @@ Get tokens allowed to spent by `_spender`
 
 **Parameters:**
 
-  - `_spender`: The address of the account able to transfer the tokens
   - `_owner`: The address of the account owning tokens
+  - `_spender`: The address of the account able to transfer the tokens
 
 **Returns:**
 
@@ -27,8 +27,8 @@ Amount of remaining tokens allowed to spent
 
 **Parameters:**
 
-  - `_spender`: The address of the account able to transfer the tokens
   - `_value`: The amount of tokens to be approved for transfer
+  - `_spender`: The address of the account able to transfer the tokens
 
 **Returns:**
 
@@ -42,9 +42,9 @@ authorize an address to create Gimli game (bet, vote, etc.)
 
 **Parameters:**
 
-  - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
-  - `_maxPrice`: The maximum price a Streamer can claim to users for a game
   - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
+  - `_maxPrice`: The maximum price a Streamer can claim to users for a game
+  - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
   - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
   - `_streamerAddress`: Authorized address
 
@@ -68,8 +68,8 @@ Called by a Gimli contract to claim game payment
 
 **Parameters:**
 
-  - `_price`: Price paid by `_userAddress`
   - `_userAddress`: User address who pays the game
+  - `_price`: Price paid by `_userAddress`
   - `_streamerAddress`: Streamer address who created the game
 
 ### `getAllowedContracByIndex(address,uint256)`
@@ -156,8 +156,8 @@ send `_value` token to `_to` from `msg.sender`
 
 **Parameters:**
 
-  - `_to`: The address of the recipient
   - `_value`: The amount of token to be transferred
+  - `_to`: The address of the recipient
 
 **Returns:**
 
@@ -169,9 +169,9 @@ send `_value` token to `_to` from `_from` on the condition it is approved by `_f
 
 **Parameters:**
 
-  - `_to`: The address of the recipient
   - `_value`: The amount of token to be transferred
   - `_from`: The address of the sender
+  - `_to`: The address of the recipient
 
 **Returns:**
 
