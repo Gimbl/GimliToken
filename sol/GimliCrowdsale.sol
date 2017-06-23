@@ -9,7 +9,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
     uint256 public constant CROWDSALE_AMOUNT = 100 * MILLION_GML;
     uint256 public constant CROWDSALE_START_BLOCK = 0; // TODO
     uint256 public constant CROWDSALE_END_BLOCK = 10**10; // TODO
-    uint256 public constant CROWDSALE_PRICE = 10**15 / DECIMALS; // 0.001 ETH / GML
+    uint256 public constant CROWDSALE_PRICE = 10**15 / UNIT; // 0.001 ETH / GML
 
     uint256 public GMLSold = 0;
     bool public crowdsaleClosed = false;

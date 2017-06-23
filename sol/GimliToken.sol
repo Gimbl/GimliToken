@@ -13,12 +13,14 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     *************************/
 
     /// total amount of tokens
-    uint256 public constant TOTAL_SUPPLY = 150 * MILLION_GML; // can't use `safeMul` with constant
     string public constant NAME = "Gimli Token";
-    uint8 public constant DECIMALS = 8;
     string public constant SYMBOL = "GML";
     string public constant VERSION = 'v1';
-    uint constant MILLION_GML = 10**6 * DECIMALS; // can't use `safeMul` with constant
+
+    /// total amount of tokens
+    uint256 public constant UNIT = 10**8;
+    uint256 constant MILLION_GML = 10**6 * UNIT; // can't use `safeMul` with constant
+    uint256 public constant TOTAL_SUPPLY = 150 * MILLION_GML; // can't use `safeMul` with constant
 
     /// balances indexed by address
     mapping (address => uint256) balances;

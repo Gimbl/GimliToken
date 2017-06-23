@@ -42,11 +42,11 @@ authorize an address to create Gimli game (bet, vote, etc.)
 
 **Parameters:**
 
-  - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
-  - `_streamerAddress`: Authorized address
-  - `_maxPrice`: The maximum price a Streamer can claim to users for a game
-  - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
   - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
+  - `_streamerAddress`: Authorized address
+  - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
+  - `_maxPrice`: The maximum price a Streamer can claim to users for a game
+  - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
 
 ### `balanceOf(address)`
 
@@ -68,8 +68,8 @@ Called by a Gimli contract to claim game payment
 
 **Parameters:**
 
-  - `_userAddress`: User address who pays the game
   - `_streamerAddress`: Streamer address who created the game
+  - `_userAddress`: User address who pays the game
   - `_price`: Price paid by `_userAddress`
 
 ### `getAllowedContracByIndex(address,uint256)`
@@ -78,8 +78,8 @@ Get information about a contract allowed to a streamer
 
 **Parameters:**
 
-  - `_streamerAddress`: The streamer address
   - `_contractIndex`: The contract address position in `authorizedStreamerAllowances[_streamerAddress].allowedContracts`
+  - `_streamerAddress`: The streamer address
 
 **Returns:**
 
@@ -176,8 +176,8 @@ send `_value` token to `_to` from `msg.sender`
 
 **Parameters:**
 
-  - `_to`: The address of the recipient
   - `_value`: The amount of token to be transferred
+  - `_to`: The address of the recipient
 
 **Returns:**
 
@@ -189,9 +189,9 @@ send `_value` token to `_to` from `_from` on the condition it is approved by `_f
 
 **Parameters:**
 
-  - `_to`: The address of the recipient
-  - `_value`: The amount of token to be transferred
   - `_from`: The address of the sender
+  - `_value`: The amount of token to be transferred
+  - `_to`: The address of the recipient
 
 **Returns:**
 
