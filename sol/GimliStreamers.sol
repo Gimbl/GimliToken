@@ -4,7 +4,7 @@ import "SafeMath.sol";
 import "GimliToken.sol";
 import "Administrable.sol";
 
-/// @title Gimli Crowdsale Contract.
+/// @title Gimli Streamer Contract.
 /// @dev This contract manages streamer authorizations. To make a streamer able to create
 /// a game (Bet, vote, etc.), the owner must authorize him with the function :
 /// `authorizeStreamer()`. When a user plays (bet or vote), the game contract (GimliBetting, GimliVoting, ..),
