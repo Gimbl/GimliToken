@@ -64,40 +64,67 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
         StreamerRevoked(_streamerAddress);
     }
 
-    /// @notice Called by a Gimli contract to claim game payment
-    /// @param _streamerAddress Streamer address who created the game
-    /// @param _userAddress User address who pays the game
-    /// @param _price  Price paid by `_userAddress`
-    /// @dev `msg.sender` and `_streamerAddress` must be authorized with the
-    /// function `authorizeStreamer()`. `_userAddress` must be the origin of
-    /// the transaction.
-    function claimGMLPayment(address _streamerAddress, address _userAddress, uint256 _price) {
-
+    modifier onlyAuthorizedContract(address _streamerAddress, address _userAddress, uint256 _amount) {
         // only authorized streamer can claim payment
         require(authorizedStreamers[_streamerAddress].authorized);
 
         // only authorized contract can claim payment
         contractPermissions permissions = authorizedStreamers[_streamerAddress].permissions[msg.sender];
-        require(permissions.maxPrice >= _price);
+        require(permissions.maxPrice >= _amount);
+        assert(safeAdd(permissions.gimliFeesPpm, permissions.streamerFeesPpm) == 1000);
 
         // only _user can be the origin of this transaction
         require(tx.origin == _userAddress);
+        _;
+    }
+
+    /// @notice Called by a Gimli contract to claim game payment
+    /// @param _streamerAddress Streamer address who created the game
+    /// @param _userAddress User address who pays the game
+    /// @param _amount  Price paid by `_userAddress`
+    /// @dev `msg.sender` and `_streamerAddress` must be authorized with the
+    /// function `authorizeStreamer()`. `_userAddress` must be the origin of
+    /// the transaction.
+    function claimGMLFees(address _streamerAddress, address _userAddress, uint256 _amount)
+             onlyAuthorizedContract(_streamerAddress, _userAddress, _amount) {
 
         // check user balance
-        require(balances[_userAddress] >= _price);
+        require(balances[_userAddress] >= _amount);
 
-        // Calculates fees
-        assert(safeAdd(permissions.gimliFeesPpm, permissions.streamerFeesPpm) == 1000);
-        uint256 gimliFees = safeDiv(safeMul(permissions.gimliFeesPpm, _price), 1000);
-        uint256 streamerFees = safeDiv(safeMul(permissions.streamerFeesPpm, _price), 1000);
+        // Share fees
+        contractPermissions permissions = authorizedStreamers[_streamerAddress].permissions[msg.sender];
+        uint256 gimliFees = safeDiv(safeMul(permissions.gimliFeesPpm, _amount), 1000);
+        uint256 streamerFees = safeDiv(safeMul(permissions.streamerFeesPpm, _amount), 1000);
 
         // update balances
-        balances[_userAddress] = safeSub(balances[_userAddress], _price);
+        balances[_userAddress] = safeSub(balances[_userAddress], _amount);
         balances[owner] = safeAdd(balances[owner], gimliFees);
         balances[_streamerAddress] = safeAdd(balances[_streamerAddress], streamerFees);
 
         Transfer(_userAddress, owner, gimliFees);
-        Transfer(_streamerAddress, owner, streamerFees);
+        Transfer(_userAddress, _streamerAddress, streamerFees);
+    }
+
+    /// @notice Called by a Gimli contract to put GML in escrow, for instance
+    /// by GimliBetting when a stake is placed by _userAddress. To unescrow
+    /// the funds the contract must use the function `transfer`.
+    /// @param _streamerAddress Streamer address who created the game
+    /// @param _userAddress User address who pays the game
+    /// @param _amount  Amount put in escrow
+    /// @dev `msg.sender` and `_streamerAddress` must be authorized with the
+    /// function `authorizeStreamer()`. `_userAddress` must be the origin of
+    /// the transaction.
+    function escrowGML(address _streamerAddress, address _userAddress, uint256 _amount)
+            onlyAuthorizedContract(_streamerAddress, _userAddress, _amount) {
+
+        // check user balance
+        require(balances[_userAddress] >= _amount);
+
+        // update balances
+        balances[_userAddress] = safeSub(balances[_userAddress], _amount);
+        balances[msg.sender] = safeAdd(balances[msg.sender], _amount);
+
+        Transfer(_userAddress, msg.sender, _amount);
     }
 
     /// @notice Checks if a streamer is authorized

@@ -35,10 +35,18 @@
          },
          "return" : "The balance"
       },
-      "claimGMLPayment(address,address,uint256)" : {
+      "claimGMLFees(address,address,uint256)" : {
          "details" : "`msg.sender` and `_streamerAddress` must be authorized with the function `authorizeStreamer()`. `_userAddress` must be the origin of the transaction.",
          "params" : {
-            "_price" : "Price paid by `_userAddress`",
+            "_amount" : "Price paid by `_userAddress`",
+            "_streamerAddress" : "Streamer address who created the game",
+            "_userAddress" : "User address who pays the game"
+         }
+      },
+      "escrowGML(address,address,uint256)" : {
+         "details" : "`msg.sender` and `_streamerAddress` must be authorized with the function `authorizeStreamer()`. `_userAddress` must be the origin of the transaction.",
+         "params" : {
+            "_amount" : "Amount put in escrow",
             "_streamerAddress" : "Streamer address who created the game",
             "_userAddress" : "User address who pays the game"
          }

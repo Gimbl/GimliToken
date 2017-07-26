@@ -42,11 +42,11 @@ authorize an address to create Gimli game (bet, vote, etc.)
 
 **Parameters:**
 
-  - `_maxPrice`: The maximum price a Streamer can claim to users for a game
   - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
-  - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
   - `_streamerAddress`: Authorized address
+  - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
   - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
+  - `_maxPrice`: The maximum price a Streamer can claim to users for a game
 
 ### `balanceOf(address)`
 
@@ -60,7 +60,7 @@ Get balance of an address
 
 The balance
 
-### `claimGMLPayment(address,address,uint256)`
+### `claimGMLFees(address,address,uint256)`
 
 Called by a Gimli contract to claim game payment
 
@@ -68,8 +68,20 @@ Called by a Gimli contract to claim game payment
 
 **Parameters:**
 
+  - `_amount`: Price paid by `_userAddress`
   - `_userAddress`: User address who pays the game
-  - `_price`: Price paid by `_userAddress`
+  - `_streamerAddress`: Streamer address who created the game
+
+### `escrowGML(address,address,uint256)`
+
+Called by a Gimli contract to put GML in escrow, for instance by GimliBetting when a stake is placed by _userAddress. To unescrow the funds the contract must use the function `transfer`.
+
+`msg.sender` and `_streamerAddress` must be authorized with the function `authorizeStreamer()`. `_userAddress` must be the origin of the transaction.
+
+**Parameters:**
+
+  - `_amount`: Amount put in escrow
+  - `_userAddress`: User address who pays the game
   - `_streamerAddress`: Streamer address who created the game
 
 ### `getContractPermissions(address,address)`

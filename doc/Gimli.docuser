@@ -15,11 +15,14 @@
       "balanceOf(address)" : {
          "notice" : "Get balance of an address"
       },
-      "claimGMLPayment(address,address,uint256)" : {
+      "claimGMLFees(address,address,uint256)" : {
          "notice" : "Called by a Gimli contract to claim game payment"
       },
       "closeCrowdsale()" : {
          "notice" : "returns non-sold tokens to owner"
+      },
+      "escrowGML(address,address,uint256)" : {
+         "notice" : "Called by a Gimli contract to put GML in escrow, for instance by GimliBetting when a stake is placed by _userAddress. To unescrow the funds the contract must use the function `transfer`."
       },
       "getContractPermissions(address,address)" : {
          "notice" : "Get information about a contract authorized for a streamer"
