@@ -70,7 +70,8 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
 
         // only authorized contract can claim payment
         contractPermissions permissions = authorizedStreamers[_streamerAddress].permissions[msg.sender];
-        require(permissions.maxPrice >= _amount);
+        if (permissions.maxPrice < _amount)
+            return;
         assert(safeAdd(permissions.gimliFeesPpm, permissions.streamerFeesPpm) == 1000);
 
         // only _user can be the origin of this transaction
@@ -89,7 +90,8 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
              onlyAuthorizedContract(_streamerAddress, _userAddress, _amount) {
 
         // check user balance
-        require(balances[_userAddress] >= _amount);
+        if (balances[_userAddress] < _amount)
+            return;
 
         // Share fees
         contractPermissions permissions = authorizedStreamers[_streamerAddress].permissions[msg.sender];
@@ -118,7 +120,8 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
             onlyAuthorizedContract(_streamerAddress, _userAddress, _amount) {
 
         // check user balance
-        require(balances[_userAddress] >= _amount);
+        if (balances[_userAddress] < _amount)
+            return;
 
         // update balances
         balances[_userAddress] = safeSub(balances[_userAddress], _amount);

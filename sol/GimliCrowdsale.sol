@@ -6,11 +6,6 @@ import "GimliToken.sol";
 /// @title Gimli Crowdsale Contract.
 contract GimliCrowdsale is SafeMath, GimliToken {
 
-    uint256 public constant CROWDSALE_AMOUNT = 100 * MILLION_GML;
-    uint256 public constant CROWDSALE_START_BLOCK = 0; // TODO
-    uint256 public constant CROWDSALE_END_BLOCK = 10**10; // TODO
-    uint256 public constant CROWDSALE_PRICE = 10**15 / UNIT; // 0.001 ETH / GML
-
     /// @notice `msg.sender` invest `msg.value`
     function() payable {
         require(msg.value > 0);
@@ -19,7 +14,8 @@ contract GimliCrowdsale is SafeMath, GimliToken {
 
         // calculate and check quantity
         uint256 quantity = safeDiv(msg.value, CROWDSALE_PRICE);
-        require(safeSub(balances[this], quantity) >= 0);
+        if (safeSub(balances[this], quantity) < 0)
+            return;
 
         // update balances
         balances[this] = safeSub(balances[this], quantity);
@@ -45,5 +41,16 @@ contract GimliCrowdsale is SafeMath, GimliToken {
     /// @param _to The withdrawal destination
     function withdrawalCrowdsale(address _to) onlyOwner {
         _to.transfer(this.balance);
+    }
+
+    /// @notice Pre-allocate tokens to advisor or partner
+    /// @param _to The pre-allocation destination
+    /// @param _value The amount of token to be allocated
+    function preAllocate(address _to, uint256 _value) onlyOwner {
+        require(block.number < CROWDSALE_START_BLOCK);
+
+        balances[_to] = safeAdd(balances[_to], _value);
+        balances[this] = safeSub(balances[this], _value);
+        preAllocatedAmount = safeAdd(preAllocatedAmount, _value);
     }
 }

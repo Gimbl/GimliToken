@@ -42,9 +42,4 @@ contract SafeMath {
     return a < b ? a : b;
   }
 
-  function assert(bool assertion) internal {
-    if (!assertion) {
-      throw;
-    }
-  }
 }

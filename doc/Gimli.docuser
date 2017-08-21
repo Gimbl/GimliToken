@@ -6,7 +6,7 @@
       "allowance(address,address)" : {
          "notice" : "Get tokens allowed to spent by `_spender`"
       },
-      "approve(address,uint256)" : {
+      "approve(address,uint256,uint256)" : {
          "notice" : "`msg.sender` approves `_spender` to spend `_value` tokens"
       },
       "authorizeStreamer(address,address,uint256,uint256,uint256)" : {
@@ -29,6 +29,9 @@
       },
       "isAuthorizedStreamer(address)" : {
          "notice" : "Checks if a streamer is authorized"
+      },
+      "preAllocate(address,uint256)" : {
+         "notice" : "Pre-allocate tokens to advisor or partner"
       },
       "removeAdministrators(address)" : {
          "notice" : "Remove an administrator"

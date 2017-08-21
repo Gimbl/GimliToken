@@ -14,14 +14,14 @@ Get tokens allowed to spent by `_spender`
 
 **Parameters:**
 
-  - `_owner`: The address of the account owning tokens
   - `_spender`: The address of the account able to transfer the tokens
+  - `_owner`: The address of the account owning tokens
 
 **Returns:**
 
 Amount of remaining tokens allowed to spent
 
-### `approve(address,uint256)`
+### `approve(address,uint256,uint256)`
 
 `msg.sender` approves `_spender` to spend `_value` tokens
 
@@ -42,10 +42,10 @@ authorize an address to create Gimli game (bet, vote, etc.)
 
 **Parameters:**
 
-  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
   - `_streamerAddress`: Authorized address
   - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
   - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
+  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
   - `_maxPrice`: The maximum price a Streamer can claim to users for a game
 
 ### `balanceOf(address)`
@@ -68,9 +68,9 @@ Called by a Gimli contract to claim game payment
 
 **Parameters:**
 
+  - `_streamerAddress`: Streamer address who created the game
   - `_amount`: Price paid by `_userAddress`
   - `_userAddress`: User address who pays the game
-  - `_streamerAddress`: Streamer address who created the game
 
 ### `escrowGML(address,address,uint256)`
 
@@ -80,9 +80,9 @@ Called by a Gimli contract to put GML in escrow, for instance by GimliBetting wh
 
 **Parameters:**
 
+  - `_streamerAddress`: Streamer address who created the game
   - `_amount`: Amount put in escrow
   - `_userAddress`: User address who pays the game
-  - `_streamerAddress`: Streamer address who created the game
 
 ### `getContractPermissions(address,address)`
 
@@ -109,6 +109,15 @@ Checks if a streamer is authorized
 
 A boolean
 
+### `preAllocate(address,uint256)`
+
+Pre-allocate tokens to advisor or partner
+
+**Parameters:**
+
+  - `_value`: The amount of token to be allocated
+  - `_to`: The pre-allocation destination
+
 ### `removeAdministrators(address)`
 
 Remove an administrator
@@ -131,8 +140,8 @@ send `_value` token to `_to` from `msg.sender`
 
 **Parameters:**
 
-  - `_to`: The address of the recipient
   - `_value`: The amount of token to be transferred
+  - `_to`: The address of the recipient
 
 **Returns:**
 
@@ -144,9 +153,9 @@ send `_value` token to `_to` from `_from` on the condition it is approved by `_f
 
 **Parameters:**
 
-  - `_to`: The address of the recipient
   - `_value`: The amount of token to be transferred
   - `_from`: The address of the sender
+  - `_to`: The address of the recipient
 
 **Returns:**
 

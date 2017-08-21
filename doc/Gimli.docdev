@@ -12,7 +12,7 @@
          },
          "return" : "Amount of remaining tokens allowed to spent"
       },
-      "approve(address,uint256)" : {
+      "approve(address,uint256,uint256)" : {
          "params" : {
             "_spender" : "The address of the account able to transfer the tokens",
             "_value" : "The amount of tokens to be approved for transfer"
@@ -63,6 +63,12 @@
             "_streamerAddress" : "The streamer address"
          },
          "return" : "A boolean"
+      },
+      "preAllocate(address,uint256)" : {
+         "params" : {
+            "_to" : "The pre-allocation destination",
+            "_value" : "The amount of token to be allocated"
+         }
       },
       "removeAdministrators(address)" : {
          "params" : {
