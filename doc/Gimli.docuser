@@ -6,7 +6,7 @@
       "allowance(address,address)" : {
          "notice" : "Get tokens allowed to spent by `_spender`"
       },
-      "approve(address,uint256,uint256)" : {
+      "approve(address,uint256)" : {
          "notice" : "`msg.sender` approves `_spender` to spend `_value` tokens"
       },
       "authorizeStreamer(address,address,uint256,uint256,uint256)" : {

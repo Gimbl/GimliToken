@@ -20,6 +20,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
         // update balances
         balances[this] = safeSub(balances[this], quantity);
         balances[msg.sender] = safeAdd(balances[msg.sender], quantity);
+        soldAmount = safeAdd(soldAmount, quantity);
 
         Transfer(this, msg.sender, quantity);
     }
@@ -51,6 +52,6 @@ contract GimliCrowdsale is SafeMath, GimliToken {
 
         balances[_to] = safeAdd(balances[_to], _value);
         balances[this] = safeSub(balances[this], _value);
-        preAllocatedAmount = safeAdd(preAllocatedAmount, _value);
+        soldAmount = safeAdd(soldAmount, _value);
     }
 }

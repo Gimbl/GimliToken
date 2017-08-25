@@ -17,7 +17,7 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     uint256 public constant CROWDSALE_START_BLOCK = 0; // TODO
     uint256 public constant CROWDSALE_END_BLOCK = 10**10; // TODO
     uint256 public constant CROWDSALE_PRICE = 10**15 / UNIT; // 0.001 ETH / GML
-    uint256 public preAllocatedAmount;
+    uint256 public soldAmount;
 
     /// total amount of tokens
     string public constant NAME = "Gimli Token";
@@ -84,12 +84,15 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /// @param _spender The address of the account able to transfer the tokens
     /// @param _value The amount of tokens to be approved for transfer
     /// @return Whether the approval was successful or not
-    function approve(address _spender, uint256 _currentValue, uint256 _value) returns (bool success) {
-        if (allowed[msg.sender][_spender] != _currentValue)
-            return false;
+    function approve(address _spender, uint256 _value) returns (bool success) {
+        // To change the approve amount you first have to reduce the addresses`
+        //  allowance to zero by calling `approve(_spender, 0)` if it is not
+        //  already 0 to mitigate the race condition described here:
+        //  https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
+        require((_value == 0) || (allowed[msg.sender][_spender] == 0));
 
         allowed[msg.sender][_spender] = _value;
-        Approval(msg.sender, _spender, _currentValue, _value);
+        Approval(msg.sender, _spender, _value);
         return true;
     }
 
