@@ -19,10 +19,10 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
     struct contractPermissions {
         uint256    streamerFeesPpm; // ppm, ex: 5 for 0.5%
         uint256    gimliFeesPpm; // ppm, ex: 5 for 0.5%
-        uint256    maxPrice;
+        uint256    maxAmount;
     }
 
-    event StreamerAuthorized(address indexed streamerAddress, address indexed contractAddress, uint maxPrice);
+    event StreamerAuthorized(address indexed streamerAddress, address indexed contractAddress, uint maxAmount);
     event StreamerRevoked(address indexed streamerAddress);
 
     /// Authorized streamers
@@ -33,14 +33,14 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
     /// @param _contractAddress Contract address (GimliBetting, GimliVoting, etc.)
     /// @param _streamerFeesPpm Share of fees for the streamer (ppm, ex: 5 for 0.5%)
     /// @param _gimliFeesPpm Share of fees for Gimli (ppm, ex: 5 for 0.5%)
-    /// @param _maxPrice The maximum price a Streamer can claim to users for a game
+    /// @param _maxAmount The maximum fee or escrow a Streamer can claim to users for a game
     /// @dev `_streamerFeesPpm + _gimliFeesPpm` must be equal to 1000
     function authorizeStreamer(
         address _streamerAddress,
         address _contractAddress,
         uint256 _streamerFeesPpm,
         uint256 _gimliFeesPpm,
-        uint256 _maxPrice) onlyAdministrator
+        uint256 _maxAmount) onlyAdministrator
     {
         // The whole GML payment must be shared
         require(safeAdd(_streamerFeesPpm, _gimliFeesPpm) == 1000);
@@ -51,9 +51,9 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
         streamer.authorized = true;
         permissions.streamerFeesPpm = _streamerFeesPpm;
         permissions.gimliFeesPpm = _gimliFeesPpm;
-        permissions.maxPrice = _maxPrice;
+        permissions.maxAmount = _maxAmount;
 
-        StreamerAuthorized(_streamerAddress, _contractAddress, _maxPrice);
+        StreamerAuthorized(_streamerAddress, _contractAddress, _maxAmount);
     }
 
     /// @notice Revoke a streamer for all contracts
@@ -70,7 +70,7 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
 
         // only authorized contract can claim payment
         contractPermissions permissions = authorizedStreamers[_streamerAddress].permissions[msg.sender];
-        if (permissions.maxPrice < _amount)
+        if (permissions.maxAmount < _amount)
             return;
         assert(safeAdd(permissions.gimliFeesPpm, permissions.streamerFeesPpm) == 1000);
 
@@ -145,7 +145,7 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
     function getContractPermissions(address _streamerAddress, address _contractAddress)
         returns (uint256, uint256, uint256) {
         contractPermissions a = authorizedStreamers[_streamerAddress].permissions[_contractAddress];
-        return (a.streamerFeesPpm, a.gimliFeesPpm, a.maxPrice);
+        return (a.streamerFeesPpm, a.gimliFeesPpm, a.maxAmount);
     }
 
 }

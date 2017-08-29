@@ -24,7 +24,7 @@
          "params" : {
             "_contractAddress" : "Contract address (GimliBetting, GimliVoting, etc.)",
             "_gimliFeesPpm" : "Share of fees for Gimli (ppm, ex: 5 for 0.5%)",
-            "_maxPrice" : "The maximum price a Streamer can claim to users for a game",
+            "_maxAmount" : "The maximum fee or escrow a Streamer can claim to users for a game",
             "_streamerAddress" : "Authorized address",
             "_streamerFeesPpm" : "Share of fees for the streamer (ppm, ex: 5 for 0.5%)"
          }
