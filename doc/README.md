@@ -14,8 +14,8 @@ Get tokens allowed to spent by `_spender`
 
 **Parameters:**
 
-  - `_spender`: The address of the account able to transfer the tokens
   - `_owner`: The address of the account owning tokens
+  - `_spender`: The address of the account able to transfer the tokens
 
 **Returns:**
 
@@ -27,8 +27,8 @@ Amount of remaining tokens allowed to spent
 
 **Parameters:**
 
-  - `_value`: The amount of tokens to be approved for transfer
   - `_spender`: The address of the account able to transfer the tokens
+  - `_value`: The amount of tokens to be approved for transfer
 
 **Returns:**
 
@@ -44,9 +44,9 @@ authorize an address to create Gimli game (bet, vote, etc.)
 
   - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
   - `_streamerAddress`: Authorized address
+  - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
   - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
   - `_maxAmount`: The maximum fee or escrow a Streamer can claim to users for a game
-  - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
 
 ### `balanceOf(address)`
 
@@ -115,8 +115,20 @@ Pre-allocate tokens to advisor or partner
 
 **Parameters:**
 
-  - `_value`: The amount of token to be allocated
   - `_to`: The pre-allocation destination
+  - `_value`: The amount of token to be allocated
+
+### `releaseVesting(address)`
+
+Send vested amount to _destination
+
+**Parameters:**
+
+  - `_destination`: The address of the recipient
+
+**Returns:**
+
+Whether the release was successful or not
 
 ### `removeAdministrators(address)`
 
@@ -140,8 +152,8 @@ send `_value` token to `_to` from `msg.sender`
 
 **Parameters:**
 
-  - `_value`: The amount of token to be transferred
   - `_to`: The address of the recipient
+  - `_value`: The amount of token to be transferred
 
 **Returns:**
 
@@ -153,9 +165,9 @@ send `_value` token to `_to` from `_from` on the condition it is approved by `_f
 
 **Parameters:**
 
-  - `_value`: The amount of token to be transferred
-  - `_to`: The address of the recipient
   - `_from`: The address of the sender
+  - `_to`: The address of the recipient
+  - `_value`: The amount of token to be transferred
 
 **Returns:**
 

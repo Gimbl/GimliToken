@@ -70,6 +70,12 @@
             "_value" : "The amount of token to be allocated"
          }
       },
+      "releaseVesting(address)" : {
+         "params" : {
+            "_destination" : "The address of the recipient"
+         },
+         "return" : "Whether the release was successful or not"
+      },
       "removeAdministrators(address)" : {
          "params" : {
             "_adminAddress" : "The administrator address to remove"

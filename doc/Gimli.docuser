@@ -33,6 +33,9 @@
       "preAllocate(address,uint256)" : {
          "notice" : "Pre-allocate tokens to advisor or partner"
       },
+      "releaseVesting(address)" : {
+         "notice" : "Send vested amount to _destination"
+      },
       "removeAdministrators(address)" : {
          "notice" : "Remove an administrator"
       },

@@ -13,10 +13,16 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     *************************/
 
     // crowdsale
-    uint256 public constant CROWDSALE_AMOUNT = 100 * MILLION_GML;
+    uint256 public constant CROWDSALE_AMOUNT = 80 * MILLION_GML; // Should not include vested amount
     uint256 public constant CROWDSALE_START_BLOCK = 4278234; // Around 11AM GMT on 9/16/17
     uint256 public constant CROWDSALE_END_BLOCK = 4328345; // Around 11PM GMT on 9/30/17
-    uint256 public constant CROWDSALE_PRICE = 700 * UNIT / 10**18; // 700 GIM / ETH
+    uint256 public constant CROWDSALE_PRICE = 700; // 700 GIM / ETH
+    uint256 public constant VESTING_1_AMOUNT = 10 * MILLION_GML; // TODO
+    uint256 public constant VESTING_1_BLOCK = 5000000; // TODO
+    uint256 public constant VESTING_2_AMOUNT = 10 * MILLION_GML; // TODO
+    uint256 public constant VESTING_2_BLOCK = 6000000; // TODO
+    bool public vesting1Withdrawn = false;
+    bool public vesting2Withdrawn = false;
     uint256 public soldAmount;
 
     /// total amount of tokens
@@ -27,7 +33,8 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /// total amount of tokens
     uint256 public constant UNIT = 10**8;
     uint256 constant MILLION_GML = 10**6 * UNIT; // can't use `safeMul` with constant
-    uint256 public constant TOTAL_SUPPLY = 150 * MILLION_GML; // can't use `safeMul` with constant
+    /// Should include CROWDSALE_AMOUNT and VESTING_X_AMOUNT
+    uint256 public constant TOTAL_SUPPLY = 150 * MILLION_GML; // can't use `safeMul` with constant;
 
     /// balances indexed by address
     mapping (address => uint256) balances;
@@ -114,4 +121,5 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     function allowance(address _owner, address _spender) constant returns (uint256 remaining) {
       return allowed[_owner][_spender];
     }
+
 }
