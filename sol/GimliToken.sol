@@ -14,14 +14,14 @@ contract GimliToken is ERC20, SafeMath, Ownable {
 
     // crowdsale
     uint256 public constant CROWDSALE_AMOUNT = 100 * MILLION_GML;
-    uint256 public constant CROWDSALE_START_BLOCK = 0; // TODO
-    uint256 public constant CROWDSALE_END_BLOCK = 10**10; // TODO
-    uint256 public constant CROWDSALE_PRICE = 10**15 / UNIT; // 0.001 ETH / GML
+    uint256 public constant CROWDSALE_START_BLOCK = 4278234; // Around 11AM GMT on 9/16/17
+    uint256 public constant CROWDSALE_END_BLOCK = 4328345; // Around 11PM GMT on 9/30/17
+    uint256 public constant CROWDSALE_PRICE = 700 * UNIT / 10**18; // 700 GIM / ETH
     uint256 public soldAmount;
 
     /// total amount of tokens
     string public constant NAME = "Gimli Token";
-    string public constant SYMBOL = "GML";
+    string public constant SYMBOL = "GIM";
     string public constant VERSION = 'v1';
 
     /// total amount of tokens

@@ -13,7 +13,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
         require(block.number >= CROWDSALE_START_BLOCK && block.number <= CROWDSALE_END_BLOCK);
 
         // calculate and check quantity
-        uint256 quantity = safeDiv(msg.value, CROWDSALE_PRICE);
+        uint256 quantity = safeMul(msg.value, CROWDSALE_PRICE);
         if (safeSub(balances[this], quantity) < 0)
             return;
 
