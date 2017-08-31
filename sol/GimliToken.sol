@@ -16,11 +16,11 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     uint256 public constant CROWDSALE_AMOUNT = 80 * MILLION_GML; // Should not include vested amount
     uint256 public constant CROWDSALE_START_BLOCK = 4278234; // Around 11AM GMT on 9/16/17
     uint256 public constant CROWDSALE_END_BLOCK = 4328345; // Around 11PM GMT on 9/30/17
-    uint256 public constant CROWDSALE_PRICE = 700; // 700 GIM / ETH
-    uint256 public constant VESTING_1_AMOUNT = 10 * MILLION_GML; // TODO
-    uint256 public constant VESTING_1_BLOCK = 5000000; // TODO
-    uint256 public constant VESTING_2_AMOUNT = 10 * MILLION_GML; // TODO
-    uint256 public constant VESTING_2_BLOCK = 6000000; // TODO
+    uint256 public constant CROWDSALE_PRICE = 700; // 700 GML / ETH
+    uint256 public constant VESTING_1_AMOUNT = 15 * MILLION_GML; // TODO
+    uint256 public constant VESTING_1_BLOCK = 5539673; // Around start + 1 year
+    uint256 public constant VESTING_2_AMOUNT = 15 * MILLION_GML; // TODO
+    uint256 public constant VESTING_2_BLOCK = 6801113; // Around start + 2 years
     bool public vesting1Withdrawn = false;
     bool public vesting2Withdrawn = false;
     uint256 public soldAmount;
