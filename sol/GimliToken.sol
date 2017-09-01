@@ -25,13 +25,13 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     bool public vesting2Withdrawn = false;
     uint256 public soldAmount;
 
-    /// total amount of tokens
-    string public constant NAME = "Gimli Token";
-    string public constant SYMBOL = "GIM";
-    string public constant VERSION = 'v1';
+    uint8 public constant decimals = 8;
+    string public constant name = "Gimli Token";
+    string public constant symbol = "GIM";
+    string public constant versoin = 'v1';
 
     /// total amount of tokens
-    uint256 public constant UNIT = 10**8;
+    uint256 public constant UNIT = 10**decimals;
     uint256 constant MILLION_GML = 10**6 * UNIT; // can't use `safeMul` with constant
     /// Should include CROWDSALE_AMOUNT and VESTING_X_AMOUNT
     uint256 public constant TOTAL_SUPPLY = 150 * MILLION_GML; // can't use `safeMul` with constant;
@@ -42,15 +42,6 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /// allowances indexed by owner and spender
     mapping (address => mapping (address => uint256)) allowed;
 
-
-    /***************
-    **** Events ****
-    ***************/
-
-    event Transfer(address indexed _from, address indexed _to, uint256 _value);
-    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
-
-
     /*********************
     **** Transactions ****
     *********************/
@@ -60,15 +51,17 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /// @param _to The address of the recipient
     /// @param _value The amount of token to be transferred
     /// @return Whether the transfer was successful or not
-    function transfer(address _to, uint256 _value) {
+    function transfer(address _to, uint256 _value) returns (bool success) {
         require(block.number > CROWDSALE_END_BLOCK);
 
         if (balances[msg.sender] < _value || _value <= 0)
-            return;
+            return false;
 
         balances[msg.sender] = safeSub(balances[msg.sender], _value);
         balances[_to] = safeAdd(balances[_to], _value);
         Transfer(msg.sender, _to, _value);
+
+        return true;
     }
 
     /// @notice send `_value` token to `_to` from `_from` on the condition it is approved by `_from`
@@ -76,15 +69,18 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /// @param _to The address of the recipient
     /// @param _value The amount of token to be transferred
     /// @return Whether the transfer was successful or not
-    function transferFrom(address _from, address _to, uint256 _value) {
+    function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
         require(block.number > CROWDSALE_END_BLOCK);
 
         if (balances[_from] < _value || allowed[_from][msg.sender] < _value || _value <= 0)
-            return;
+            return false;
+
         balances[_from] = safeSub(balances[_from], _value);
         balances[_to] = safeAdd(balances[_to], _value);
         allowed[_from][msg.sender] = safeSub(allowed[_from][msg.sender], _value);
         Transfer(_from, _to, _value);
+
+        return true;
     }
 
     /// @notice `msg.sender` approves `_spender` to spend `_value` tokens
@@ -119,7 +115,7 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /// @param _spender The address of the account able to transfer the tokens
     /// @return Amount of remaining tokens allowed to spent
     function allowance(address _owner, address _spender) constant returns (uint256 remaining) {
-      return allowed[_owner][_spender];
+        return allowed[_owner][_spender];
     }
 
 }

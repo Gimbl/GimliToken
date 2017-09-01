@@ -22,7 +22,7 @@ contract GimliStreamers is SafeMath, GimliToken, Administrable {
         uint256    maxAmount;
     }
 
-    event StreamerAuthorized(address indexed streamerAddress, address indexed contractAddress, uint maxAmount);
+    event StreamerAuthorized(address indexed streamerAddress, address indexed contractAddress, uint256 maxAmount);
     event StreamerRevoked(address indexed streamerAddress);
 
     /// Authorized streamers
