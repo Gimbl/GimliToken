@@ -18,9 +18,6 @@
       "claimGMLFees(address,address,uint256)" : {
          "notice" : "Called by a Gimli contract to claim game payment"
       },
-      "closeCrowdsale()" : {
-         "notice" : "returns non-sold tokens to owner"
-      },
       "escrowGML(address,address,uint256)" : {
          "notice" : "Called by a Gimli contract to put GML in escrow, for instance by GimliBetting when a stake is placed by _userAddress. To unescrow the funds the contract must use the function `transfer`."
       },
@@ -44,6 +41,9 @@
       },
       "transfer(address,uint256)" : {
          "notice" : "send `_value` token to `_to` from `msg.sender`"
+      },
+      "transferAnyERC20Token()" : {
+         "notice" : "returns non-sold tokens to owner"
       },
       "transferFrom(address,address,uint256)" : {
          "notice" : "send `_value` token to `_to` from `_from` on the condition it is approved by `_from`"

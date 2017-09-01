@@ -6,8 +6,6 @@ import "GimliToken.sol";
 /// @title Gimli Crowdsale Contract.
 contract GimliCrowdsale is SafeMath, GimliToken {
 
-    address public constant MULTISIG_WALLET_ADDRESS = 0xcac029186c773dbfc18402f464a3818e46541fba; // TODO
-
     /// @notice `msg.sender` invest `msg.value`
     function() payable {
         require(!crowdsaleCanceled);
@@ -28,21 +26,20 @@ contract GimliCrowdsale is SafeMath, GimliToken {
         balances[msg.sender] = safeAdd(balances[msg.sender], quantity);
         soldAmount = safeAdd(soldAmount, quantity);
 
-
         Transfer(this, msg.sender, quantity);
     }
 
     /// @notice returns non-sold tokens to owner
-    function closeCrowdsale() onlyOwner {
+    function  transferAnyERC20Token() onlyOwner {
         // check date
-        require(block.number > CROWDSALE_END_BLOCK);
+        require(block.number > CROWDSALE_END_BLOCK || crowdsaleCanceled);
 
         // update balances
-        uint256 unsoldQuantity = balances[this];
-        balances[owner] = safeAdd(balances[owner], unsoldQuantity);
+        uint256 amount = balances[this];
+        balances[owner] = safeAdd(balances[owner], amount);
         balances[this] = 0;
 
-        Transfer(this, owner, unsoldQuantity);
+        Transfer(this, owner, amount);
     }
 
     function cancelCrowdsale() onlyOwner {

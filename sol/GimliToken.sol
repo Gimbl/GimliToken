@@ -11,6 +11,7 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /*************************
     **** Global variables ****
     *************************/
+    address public constant MULTISIG_WALLET_ADDRESS = 0xcac029186c773dbfc18402f464a3818e46541fba; // TODO
 
     // crowdsale
     uint256 public constant CROWDSALE_AMOUNT = 80 * MILLION_GML; // Should not include vested amount
