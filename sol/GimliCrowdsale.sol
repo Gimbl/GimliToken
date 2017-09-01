@@ -10,6 +10,8 @@ contract GimliCrowdsale is SafeMath, GimliToken {
 
     /// @notice `msg.sender` invest `msg.value`
     function() payable {
+        require(!crowdsaleCanceled);
+
         require(msg.value > 0);
         // check date
         require(block.number >= CROWDSALE_START_BLOCK && block.number <= CROWDSALE_END_BLOCK);
@@ -41,6 +43,10 @@ contract GimliCrowdsale is SafeMath, GimliToken {
         balances[this] = 0;
 
         Transfer(this, owner, unsoldQuantity);
+    }
+
+    function cancelCrowdsale() onlyOwner {
+        crowdsaleCanceled = true;
     }
 
     /// @notice Pre-allocate tokens to advisor or partner

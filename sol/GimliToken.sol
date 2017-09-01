@@ -23,6 +23,7 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     uint256 public constant VESTING_2_BLOCK = 6801113; // Around start + 2 years
     bool public vesting1Withdrawn = false;
     bool public vesting2Withdrawn = false;
+    bool public crowdsaleCanceled = false;
     uint256 public soldAmount;
 
     uint8 public constant decimals = 8;

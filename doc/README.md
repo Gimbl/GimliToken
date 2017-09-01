@@ -42,11 +42,11 @@ authorize an address to create Gimli game (bet, vote, etc.)
 
 **Parameters:**
 
-  - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
-  - `_streamerAddress`: Authorized address
-  - `_maxAmount`: The maximum fee or escrow a Streamer can claim to users for a game
   - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
+  - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
+  - `_maxAmount`: The maximum fee or escrow a Streamer can claim to users for a game
   - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
+  - `_streamerAddress`: Authorized address
 
 ### `balanceOf(address)`
 
@@ -69,8 +69,8 @@ Called by a Gimli contract to claim game payment
 **Parameters:**
 
   - `_streamerAddress`: Streamer address who created the game
-  - `_amount`: Price paid by `_userAddress`
   - `_userAddress`: User address who pays the game
+  - `_amount`: Price paid by `_userAddress`
 
 ### `escrowGML(address,address,uint256)`
 
@@ -81,8 +81,8 @@ Called by a Gimli contract to put GML in escrow, for instance by GimliBetting wh
 **Parameters:**
 
   - `_streamerAddress`: Streamer address who created the game
-  - `_amount`: Amount put in escrow
   - `_userAddress`: User address who pays the game
+  - `_amount`: Amount put in escrow
 
 ### `getContractPermissions(address,address)`
 
@@ -90,8 +90,8 @@ Get information about a contract authorized for a streamer
 
 **Parameters:**
 
-  - `_contractAddress`: The contract address
   - `_streamerAddress`: The streamer address
+  - `_contractAddress`: The contract address
 
 **Returns:**
 
@@ -115,8 +115,8 @@ Pre-allocate tokens to advisor or partner
 
 **Parameters:**
 
-  - `_value`: The amount of token to be allocated
   - `_to`: The pre-allocation destination
+  - `_value`: The amount of token to be allocated
 
 ### `releaseVesting(address)`
 
@@ -152,8 +152,8 @@ send `_value` token to `_to` from `msg.sender`
 
 **Parameters:**
 
-  - `_value`: The amount of token to be transferred
   - `_to`: The address of the recipient
+  - `_value`: The amount of token to be transferred
 
 **Returns:**
 
@@ -165,9 +165,9 @@ send `_value` token to `_to` from `_from` on the condition it is approved by `_f
 
 **Parameters:**
 
-  - `_value`: The amount of token to be transferred
-  - `_to`: The address of the recipient
   - `_from`: The address of the sender
+  - `_to`: The address of the recipient
+  - `_value`: The amount of token to be transferred
 
 **Returns:**
 
