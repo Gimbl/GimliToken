@@ -42,11 +42,11 @@ authorize an address to create Gimli game (bet, vote, etc.)
 
 **Parameters:**
 
-  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
-  - `_maxAmount`: The maximum fee or escrow a Streamer can claim to users for a game
   - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
-  - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
   - `_streamerAddress`: Authorized address
+  - `_maxAmount`: The maximum fee or escrow a Streamer can claim to users for a game
+  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
+  - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
 
 ### `balanceOf(address)`
 
@@ -68,9 +68,9 @@ Called by a Gimli contract to claim game payment
 
 **Parameters:**
 
-  - `_userAddress`: User address who pays the game
-  - `_amount`: Price paid by `_userAddress`
   - `_streamerAddress`: Streamer address who created the game
+  - `_amount`: Price paid by `_userAddress`
+  - `_userAddress`: User address who pays the game
 
 ### `escrowGML(address,address,uint256)`
 
@@ -80,9 +80,9 @@ Called by a Gimli contract to put GML in escrow, for instance by GimliBetting wh
 
 **Parameters:**
 
-  - `_userAddress`: User address who pays the game
-  - `_amount`: Amount put in escrow
   - `_streamerAddress`: Streamer address who created the game
+  - `_amount`: Amount put in escrow
+  - `_userAddress`: User address who pays the game
 
 ### `getContractPermissions(address,address)`
 
@@ -165,9 +165,9 @@ send `_value` token to `_to` from `_from` on the condition it is approved by `_f
 
 **Parameters:**
 
-  - `_from`: The address of the sender
   - `_value`: The amount of token to be transferred
   - `_to`: The address of the recipient
+  - `_from`: The address of the sender
 
 **Returns:**
 
@@ -180,12 +180,4 @@ Transfer ownership from `owner` to `newOwner`
 **Parameters:**
 
   - `newOwner`: The new contract owner
-
-### `withdrawalCrowdsale(address)`
-
-Send GML payments  to `_to`
-
-**Parameters:**
-
-  - `_to`: The withdrawal destination
 

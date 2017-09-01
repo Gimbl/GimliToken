@@ -105,11 +105,6 @@
          "params" : {
             "newOwner" : "The new contract owner"
          }
-      },
-      "withdrawalCrowdsale(address)" : {
-         "params" : {
-            "_to" : "The withdrawal destination"
-         }
       }
    },
    "title" : "Main Gimli contract."

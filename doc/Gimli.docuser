@@ -50,9 +50,6 @@
       },
       "transferOwnership(address)" : {
          "notice" : "Transfer ownership from `owner` to `newOwner`"
-      },
-      "withdrawalCrowdsale(address)" : {
-         "notice" : "Send GML payments  to `_to`"
       }
    }
 }

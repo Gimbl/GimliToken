@@ -6,6 +6,8 @@ import "GimliToken.sol";
 /// @title Gimli Crowdsale Contract.
 contract GimliCrowdsale is SafeMath, GimliToken {
 
+    address public constant MULTISIG_WALLET_ADDRESS = 0xcac029186c773dbfc18402f464a3818e46541fba; // TODO
+
     /// @notice `msg.sender` invest `msg.value`
     function() payable {
         require(msg.value > 0);
@@ -17,10 +19,13 @@ contract GimliCrowdsale is SafeMath, GimliToken {
         if (safeSub(balances[this], quantity) < 0)
             return;
 
+        require(MULTISIG_WALLET_ADDRESS.send(msg.value));
+
         // update balances
         balances[this] = safeSub(balances[this], quantity);
         balances[msg.sender] = safeAdd(balances[msg.sender], quantity);
         soldAmount = safeAdd(soldAmount, quantity);
+
 
         Transfer(this, msg.sender, quantity);
     }
@@ -36,12 +41,6 @@ contract GimliCrowdsale is SafeMath, GimliToken {
         balances[this] = 0;
 
         Transfer(this, owner, unsoldQuantity);
-    }
-
-    /// @notice Send GML payments  to `_to`
-    /// @param _to The withdrawal destination
-    function withdrawalCrowdsale(address _to) onlyOwner {
-        _to.transfer(this.balance);
     }
 
     /// @notice Pre-allocate tokens to advisor or partner
