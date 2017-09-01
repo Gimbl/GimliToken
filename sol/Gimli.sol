@@ -6,12 +6,14 @@ import "GimliCrowdsale.sol";
 /// @title Main Gimli contract.
 contract Gimli is GimliStreamers, GimliCrowdsale {
 
+    address public constant MULTISIG_WALLET_ADDRESS = 0xcac029186c773dbfc18402f464a3818e46541fba; // TODO
+
     /// @notice Gimli Contract constructor. `msg.sender` is the owner.
     function Gimli() {
         // `msg.sender` becomes the owner
-        owner = msg.sender;
+        owner = MULTISIG_WALLET_ADDRESS;
         // Give the creator initial tokens
-        balances[msg.sender] = safeAdd(balances[msg.sender], TOTAL_SUPPLY - CROWDSALE_AMOUNT - VESTING_1_AMOUNT - VESTING_2_AMOUNT);
+        balances[owner] = safeAdd(balances[owner], TOTAL_SUPPLY - CROWDSALE_AMOUNT - VESTING_1_AMOUNT - VESTING_2_AMOUNT);
         // Give the contract crowdsale amount
         balances[this] = CROWDSALE_AMOUNT;
         // For ERC20 compatibility
