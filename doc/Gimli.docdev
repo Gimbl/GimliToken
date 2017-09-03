@@ -101,9 +101,15 @@
          },
          "return" : "Whether the transfer was successful or not"
       },
+      "transferOtherERC20Token(address,uint256)" : {
+         "params" : {
+            "amount" : "The amount of token to be transfered",
+            "tokenAddress" : "Address of the ERC20 contract"
+         }
+      },
       "transferOwnership(address)" : {
          "params" : {
-            "newOwner" : "The new contract owner"
+            "_newOwner" : "The new contract owner"
          }
       }
    },

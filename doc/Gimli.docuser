@@ -1,5 +1,8 @@
 {
    "methods" : {
+      "acceptOwnership()" : {
+         "notice" : "accept ownership of the contract"
+      },
       "addAdministrators(address)" : {
          "notice" : "Add an administrator"
       },
@@ -15,8 +18,14 @@
       "balanceOf(address)" : {
          "notice" : "Get balance of an address"
       },
+      "cancelCrowdsale()" : {
+         "notice" : "Terminate the crowdsale before END_DATE"
+      },
       "claimGMLFees(address,address,uint256)" : {
          "notice" : "Called by a Gimli contract to claim game payment"
+      },
+      "closeCrowdsale()" : {
+         "notice" : "returns non-sold tokens to owner"
       },
       "escrowGML(address,address,uint256)" : {
          "notice" : "Called by a Gimli contract to put GML in escrow, for instance by GimliBetting when a stake is placed by _userAddress. To unescrow the funds the contract must use the function `transfer`."
@@ -42,11 +51,11 @@
       "transfer(address,uint256)" : {
          "notice" : "send `_value` token to `_to` from `msg.sender`"
       },
-      "transferAnyERC20Token()" : {
-         "notice" : "returns non-sold tokens to owner"
-      },
       "transferFrom(address,address,uint256)" : {
          "notice" : "send `_value` token to `_to` from `_from` on the condition it is approved by `_from`"
+      },
+      "transferOtherERC20Token(address,uint256)" : {
+         "notice" : "transfer out any accidentally sent ERC20 tokens"
       },
       "transferOwnership(address)" : {
          "notice" : "Transfer ownership from `owner` to `newOwner`"

@@ -11,29 +11,14 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /*************************
     **** Global variables ****
     *************************/
-    address public constant MULTISIG_WALLET_ADDRESS = 0xcac029186c773dbfc18402f464a3818e46541fba; // TODO
-
-    // crowdsale
-    uint256 public constant CROWDSALE_AMOUNT = 80 * MILLION_GML; // Should not include vested amount
-    uint256 public constant CROWDSALE_START_BLOCK = 4278234; // Around 11AM GMT on 9/16/17
-    uint256 public constant CROWDSALE_END_BLOCK = 4328345; // Around 11PM GMT on 9/30/17
-    uint256 public constant CROWDSALE_PRICE = 700; // 700 GML / ETH
-    uint256 public constant VESTING_1_AMOUNT = 15 * MILLION_GML; // TODO
-    uint256 public constant VESTING_1_BLOCK = 5539673; // Around start + 1 year
-    uint256 public constant VESTING_2_AMOUNT = 15 * MILLION_GML; // TODO
-    uint256 public constant VESTING_2_BLOCK = 6801113; // Around start + 2 years
-    bool public vesting1Withdrawn = false;
-    bool public vesting2Withdrawn = false;
-    bool public crowdsaleCanceled = false;
-    uint256 public soldAmount;
 
     uint8 public constant decimals = 8;
     string public constant name = "Gimli Token";
     string public constant symbol = "GIM";
-    string public constant versoin = 'v1';
+    string public constant version = 'v1';
 
     /// total amount of tokens
-    uint256 public constant UNIT = 10**decimals;
+    uint256 public constant UNIT = 10**uint256(decimals);
     uint256 constant MILLION_GML = 10**6 * UNIT; // can't use `safeMul` with constant
     /// Should include CROWDSALE_AMOUNT and VESTING_X_AMOUNT
     uint256 public constant TOTAL_SUPPLY = 150 * MILLION_GML; // can't use `safeMul` with constant;
@@ -43,6 +28,8 @@ contract GimliToken is ERC20, SafeMath, Ownable {
 
     /// allowances indexed by owner and spender
     mapping (address => mapping (address => uint256)) allowed;
+
+    bool transferable = false;
 
     /*********************
     **** Transactions ****
@@ -54,7 +41,7 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /// @param _value The amount of token to be transferred
     /// @return Whether the transfer was successful or not
     function transfer(address _to, uint256 _value) returns (bool success) {
-        require(block.number > CROWDSALE_END_BLOCK);
+        require(transferable);
 
         if (balances[msg.sender] < _value || _value <= 0)
             return false;
@@ -72,7 +59,7 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /// @param _value The amount of token to be transferred
     /// @return Whether the transfer was successful or not
     function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
-        require(block.number > CROWDSALE_END_BLOCK);
+        require(transferable);
 
         if (balances[_from] < _value || allowed[_from][msg.sender] < _value || _value <= 0)
             return false;
