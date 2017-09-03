@@ -8,6 +8,7 @@ import "ERC20.sol";
 contract GimliCrowdsale is SafeMath, GimliToken {
 
     address public constant MULTISIG_WALLET_ADDRESS = 0xd889caA9847F64C77118AD5Ec60291525A3d3939;
+    address public constant LOCKED_ADDRESS = 0xabcdefabcdefabcdefabcdefabcdefabcdefabcd;
 
     // crowdsale
     uint256 public constant CROWDSALE_AMOUNT = 80 * MILLION_GML; // Should not include vested amount
@@ -87,14 +88,16 @@ contract GimliCrowdsale is SafeMath, GimliToken {
     function releaseVesting(address _destination) onlyOwner returns (bool success) {
         if (block.timestamp > VESTING_1_DATE && vesting1Withdrawn == false) {
             balances[_destination] = safeAdd(balances[_destination], VESTING_1_AMOUNT);
+            balances[LOCKED_ADDRESS] = safeSub(balances[LOCKED_ADDRESS], VESTING_1_AMOUNT);
             vesting1Withdrawn = true;
-            Transfer(this, _destination, VESTING_1_AMOUNT);
+            Transfer(LOCKED_ADDRESS, _destination, VESTING_1_AMOUNT);
             return true;
         }
         if (block.timestamp > VESTING_2_DATE && vesting2Withdrawn == false) {
             balances[_destination] = safeAdd(balances[_destination], VESTING_2_AMOUNT);
+            balances[LOCKED_ADDRESS] = safeSub(balances[LOCKED_ADDRESS], VESTING_2_AMOUNT);
             vesting2Withdrawn = true;
-            Transfer(this, _destination, VESTING_2_AMOUNT);
+            Transfer(LOCKED_ADDRESS, _destination, VESTING_2_AMOUNT);
             return true;
         }
         return false;

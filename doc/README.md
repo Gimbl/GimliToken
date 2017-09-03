@@ -14,8 +14,8 @@ Get tokens allowed to spent by `_spender`
 
 **Parameters:**
 
-  - `_owner`: The address of the account owning tokens
   - `_spender`: The address of the account able to transfer the tokens
+  - `_owner`: The address of the account owning tokens
 
 **Returns:**
 
@@ -27,8 +27,8 @@ Amount of remaining tokens allowed to spent
 
 **Parameters:**
 
-  - `_value`: The amount of tokens to be approved for transfer
   - `_spender`: The address of the account able to transfer the tokens
+  - `_value`: The amount of tokens to be approved for transfer
 
 **Returns:**
 
@@ -42,11 +42,11 @@ authorize an address to create Gimli game (bet, vote, etc.)
 
 **Parameters:**
 
-  - `_maxAmount`: The maximum fee or escrow a Streamer can claim to users for a game
   - `_streamerAddress`: Authorized address
-  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
   - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
+  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
   - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
+  - `_maxAmount`: The maximum fee or escrow a Streamer can claim to users for a game
 
 ### `balanceOf(address)`
 
@@ -68,9 +68,9 @@ Called by a Gimli contract to claim game payment
 
 **Parameters:**
 
-  - `_userAddress`: User address who pays the game
   - `_streamerAddress`: Streamer address who created the game
   - `_amount`: Price paid by `_userAddress`
+  - `_userAddress`: User address who pays the game
 
 ### `escrowGML(address,address,uint256)`
 
@@ -80,9 +80,9 @@ Called by a Gimli contract to put GML in escrow, for instance by GimliBetting wh
 
 **Parameters:**
 
-  - `_userAddress`: User address who pays the game
   - `_streamerAddress`: Streamer address who created the game
   - `_amount`: Amount put in escrow
+  - `_userAddress`: User address who pays the game
 
 ### `getContractPermissions(address,address)`
 
