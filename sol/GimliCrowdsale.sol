@@ -12,8 +12,8 @@ contract GimliCrowdsale is SafeMath, GimliToken {
 
     // crowdsale
     uint256 public constant CROWDSALE_AMOUNT = 80 * MILLION_GML; // Should not include vested amount
-    uint public constant START_DATE = 1400000000; // TODO (epoch timestamp)
-    uint public constant END_DATE = 1500000000; // TODO (epoch timestamp)
+    uint256 public constant START_DATE = 1400000000; // TODO (epoch timestamp)
+    uint256 public constant END_DATE = 1500000000; // TODO (epoch timestamp)
     uint256 public constant CROWDSALE_PRICE = 700; // 700 GML / ETH
     uint256 public constant VESTING_1_AMOUNT = 15 * MILLION_GML; // TODO
     uint256 public constant VESTING_1_DATE = 1600000000; // TODO (epoch timestamp)
@@ -75,8 +75,8 @@ contract GimliCrowdsale is SafeMath, GimliToken {
     function preAllocate(address _to, uint256 _value) onlyOwner {
         require(block.timestamp < START_DATE);
 
-        balances[_to] = safeAdd(balances[_to], _value);
         balances[this] = safeSub(balances[this], _value);
+        balances[_to] = safeAdd(balances[_to], _value);
         soldAmount = safeAdd(soldAmount, _value);
 
         Transfer(this, _to, _value);
@@ -87,15 +87,15 @@ contract GimliCrowdsale is SafeMath, GimliToken {
     /// @return Whether the release was successful or not
     function releaseVesting(address _destination) onlyOwner returns (bool success) {
         if (block.timestamp > VESTING_1_DATE && vesting1Withdrawn == false) {
-            balances[_destination] = safeAdd(balances[_destination], VESTING_1_AMOUNT);
             balances[LOCKED_ADDRESS] = safeSub(balances[LOCKED_ADDRESS], VESTING_1_AMOUNT);
+            balances[_destination] = safeAdd(balances[_destination], VESTING_1_AMOUNT);
             vesting1Withdrawn = true;
             Transfer(LOCKED_ADDRESS, _destination, VESTING_1_AMOUNT);
             return true;
         }
         if (block.timestamp > VESTING_2_DATE && vesting2Withdrawn == false) {
-            balances[_destination] = safeAdd(balances[_destination], VESTING_2_AMOUNT);
             balances[LOCKED_ADDRESS] = safeSub(balances[LOCKED_ADDRESS], VESTING_2_AMOUNT);
+            balances[_destination] = safeAdd(balances[_destination], VESTING_2_AMOUNT);
             vesting2Withdrawn = true;
             Transfer(LOCKED_ADDRESS, _destination, VESTING_2_AMOUNT);
             return true;
@@ -106,7 +106,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
     /// @notice transfer out any accidentally sent ERC20 tokens
     /// @param tokenAddress Address of the ERC20 contract
     /// @param amount The amount of token to be transfered
-    function transferOtherERC20Token(address tokenAddress, uint amount)
+    function transferOtherERC20Token(address tokenAddress, uint256 amount)
       onlyOwner returns (bool success)
     {
         // can't be used for GIM token

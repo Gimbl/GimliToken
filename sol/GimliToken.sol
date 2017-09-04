@@ -29,7 +29,7 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     /// allowances indexed by owner and spender
     mapping (address => mapping (address => uint256)) allowed;
 
-    bool transferable = false;
+    bool public transferable = false;
 
     /*********************
     **** Transactions ****
