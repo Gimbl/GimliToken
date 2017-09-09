@@ -48,7 +48,7 @@ contract Gimli is GimliCrowdsale, Administrable {
     /// @return Whether the transfer was successful or not
     function transferGIM(address _from, address _to, uint256 _amount) returns (bool success) {
         require(msg.sender == streamerContract);
-        require(msg.sender == _from || tx.origin == _from);
+        require(tx.origin == _from);
         require(_amount <= streamerContractMaxAmount);
 
         if (balances[_from] < _amount || _amount <= 0)

@@ -22,8 +22,8 @@ contract GimliCrowdsale is SafeMath, GimliToken {
     bool public vesting1Withdrawn = false;
     bool public vesting2Withdrawn = false;
     bool public crowdsaleCanceled = false;
-    uint256 public soldAmount;
-    uint256 public paidAmount;
+    uint256 public soldAmount; // GIM
+    uint256 public paidAmount; // ETH
 
     /// @notice `msg.sender` invest `msg.value`
     function() payable {
