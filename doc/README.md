@@ -27,8 +27,8 @@ Amount of remaining tokens allowed to spent
 
 **Parameters:**
 
-  - `_spender`: The address of the account able to transfer the tokens
   - `_value`: The amount of tokens to be approved for transfer
+  - `_spender`: The address of the account able to transfer the tokens
 
 **Returns:**
 
@@ -52,8 +52,8 @@ Pre-allocate tokens to advisor or partner
 
 **Parameters:**
 
-  - `_price`: ETH paid for these tokens
   - `_value`: The amount of token to be allocated
+  - `_price`: ETH paid for these tokens
   - `_to`: The pre-allocation destination
 
 ### `releaseVesting(address)`
@@ -82,8 +82,8 @@ authorize an address to transfer GIM on behalf an user
 
 **Parameters:**
 
-  - `_contractAddress`: Address of GimliStreamer contract
   - `_maxAmount`: The maximum amount that can be transfered by the contract
+  - `_contractAddress`: Address of GimliStreamer contract
 
 ### `transfer(address,uint256)`
 
@@ -104,9 +104,9 @@ send `_value` token to `_to` from `_from` on the condition it is approved by `_f
 
 **Parameters:**
 
+  - `_from`: The address of the sender
   - `_value`: The amount of token to be transferred
   - `_to`: The address of the recipient
-  - `_from`: The address of the sender
 
 **Returns:**
 
@@ -118,9 +118,9 @@ Called by a Gimli contract to transfer GIM
 
 **Parameters:**
 
-  - `_to`: The address of the recipient
-  - `_amount`: The amount of token to be transferred
   - `_from`: The address of the sender
+  - `_amount`: The amount of token to be transferred
+  - `_to`: The address of the recipient
 
 **Returns:**
 
