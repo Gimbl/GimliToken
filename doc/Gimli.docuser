@@ -21,7 +21,7 @@
       "closeCrowdsale()" : {
          "notice" : "returns non-sold tokens to owner"
       },
-      "preAllocate(address,uint256)" : {
+      "preAllocate(address,uint256,uint256)" : {
          "notice" : "Pre-allocate tokens to advisor or partner"
       },
       "releaseVesting(address)" : {

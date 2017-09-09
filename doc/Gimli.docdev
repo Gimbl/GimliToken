@@ -25,8 +25,9 @@
          },
          "return" : "The balance"
       },
-      "preAllocate(address,uint256)" : {
+      "preAllocate(address,uint256,uint256)" : {
          "params" : {
+            "_price" : "ETH paid for these tokens",
             "_to" : "The pre-allocation destination",
             "_value" : "The amount of token to be allocated"
          }

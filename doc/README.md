@@ -46,12 +46,13 @@ Get balance of an address
 
 The balance
 
-### `preAllocate(address,uint256)`
+### `preAllocate(address,uint256,uint256)`
 
 Pre-allocate tokens to advisor or partner
 
 **Parameters:**
 
+  - `_price`: ETH paid for these tokens
   - `_value`: The amount of token to be allocated
   - `_to`: The pre-allocation destination
 
@@ -81,8 +82,8 @@ authorize an address to transfer GIM on behalf an user
 
 **Parameters:**
 
-  - `_maxAmount`: The maximum amount that can be transfered by the contract
   - `_contractAddress`: Address of GimliStreamer contract
+  - `_maxAmount`: The maximum amount that can be transfered by the contract
 
 ### `transfer(address,uint256)`
 
@@ -103,9 +104,9 @@ send `_value` token to `_to` from `_from` on the condition it is approved by `_f
 
 **Parameters:**
 
-  - `_from`: The address of the sender
   - `_value`: The amount of token to be transferred
   - `_to`: The address of the recipient
+  - `_from`: The address of the sender
 
 **Returns:**
 
@@ -117,9 +118,9 @@ Called by a Gimli contract to transfer GIM
 
 **Parameters:**
 
+  - `_to`: The address of the recipient
   - `_amount`: The amount of token to be transferred
   - `_from`: The address of the sender
-  - `_to`: The address of the recipient
 
 **Returns:**
 

@@ -23,6 +23,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
     bool public vesting2Withdrawn = false;
     bool public crowdsaleCanceled = false;
     uint256 public soldAmount;
+    uint256 public paidAmount;
 
     /// @notice `msg.sender` invest `msg.value`
     function() payable {
@@ -43,6 +44,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
         balances[this] = safeSub(balances[this], quantity);
         balances[msg.sender] = safeAdd(balances[msg.sender], quantity);
         soldAmount = safeAdd(soldAmount, quantity);
+        paidAmount = safeAdd(paidAmount, msg.value);
 
         Transfer(this, msg.sender, quantity);
     }
@@ -72,12 +74,14 @@ contract GimliCrowdsale is SafeMath, GimliToken {
     /// @notice Pre-allocate tokens to advisor or partner
     /// @param _to The pre-allocation destination
     /// @param _value The amount of token to be allocated
-    function preAllocate(address _to, uint256 _value) onlyOwner {
+    /// @param _price ETH paid for these tokens
+    function preAllocate(address _to, uint256 _value, uint256 _price) onlyOwner {
         require(block.timestamp < START_DATE);
 
         balances[this] = safeSub(balances[this], _value);
         balances[_to] = safeAdd(balances[_to], _value);
         soldAmount = safeAdd(soldAmount, _value);
+        paidAmount = safeAdd(paidAmount, _price);
 
         Transfer(this, _to, _value);
     }
