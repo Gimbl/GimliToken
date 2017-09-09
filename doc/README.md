@@ -14,8 +14,8 @@ Get tokens allowed to spent by `_spender`
 
 **Parameters:**
 
-  - `_owner`: The address of the account owning tokens
   - `_spender`: The address of the account able to transfer the tokens
+  - `_owner`: The address of the account owning tokens
 
 **Returns:**
 
@@ -27,26 +27,12 @@ Amount of remaining tokens allowed to spent
 
 **Parameters:**
 
-  - `_value`: The amount of tokens to be approved for transfer
   - `_spender`: The address of the account able to transfer the tokens
+  - `_value`: The amount of tokens to be approved for transfer
 
 **Returns:**
 
 Whether the approval was successful or not
-
-### `authorizeStreamer(address,address,uint256,uint256,uint256)`
-
-authorize an address to create Gimli game (bet, vote, etc.)
-
-`_streamerFeesPpm + _gimliFeesPpm` must be equal to 1000
-
-**Parameters:**
-
-  - `_streamerFeesPpm`: Share of fees for the streamer (ppm, ex: 5 for 0.5%)
-  - `_maxAmount`: The maximum fee or escrow a Streamer can claim to users for a game
-  - `_contractAddress`: Contract address (GimliBetting, GimliVoting, etc.)
-  - `_streamerAddress`: Authorized address
-  - `_gimliFeesPpm`: Share of fees for Gimli (ppm, ex: 5 for 0.5%)
 
 ### `balanceOf(address)`
 
@@ -59,55 +45,6 @@ Get balance of an address
 **Returns:**
 
 The balance
-
-### `claimGMLFees(address,address,uint256)`
-
-Called by a Gimli contract to claim game payment
-
-`msg.sender` and `_streamerAddress` must be authorized with the function `authorizeStreamer()`. `_userAddress` must be the origin of the transaction.
-
-**Parameters:**
-
-  - `_userAddress`: User address who pays the game
-  - `_streamerAddress`: Streamer address who created the game
-  - `_amount`: Price paid by `_userAddress`
-
-### `escrowGML(address,address,uint256)`
-
-Called by a Gimli contract to put GML in escrow, for instance by GimliBetting when a stake is placed by _userAddress. To unescrow the funds the contract must use the function `transfer`.
-
-`msg.sender` and `_streamerAddress` must be authorized with the function `authorizeStreamer()`. `_userAddress` must be the origin of the transaction.
-
-**Parameters:**
-
-  - `_userAddress`: User address who pays the game
-  - `_streamerAddress`: Streamer address who created the game
-  - `_amount`: Amount put in escrow
-
-### `getContractPermissions(address,address)`
-
-Get information about a contract authorized for a streamer
-
-**Parameters:**
-
-  - `_contractAddress`: The contract address
-  - `_streamerAddress`: The streamer address
-
-**Returns:**
-
-Share of fees for streamer and Gimli, the maximum price authorized and a boolean to indicate if the permission exists.
-
-### `isAuthorizedStreamer(address)`
-
-Checks if a streamer is authorized
-
-**Parameters:**
-
-  - `_streamerAddress`: The streamer address
-
-**Returns:**
-
-A boolean
 
 ### `preAllocate(address,uint256)`
 
@@ -138,13 +75,14 @@ Remove an administrator
 
   - `_adminAddress`: The administrator address to remove
 
-### `revokeStreamer(address)`
+### `setStreamerContract(address,uint256)`
 
-Revoke a streamer for all contracts
+authorize an address to transfer GIM on behalf an user
 
 **Parameters:**
 
-  - `_streamerAddress`: Streamer address to revoke
+  - `_maxAmount`: The maximum amount that can be transfered by the contract
+  - `_contractAddress`: Address of GimliStreamer contract
 
 ### `transfer(address,uint256)`
 
@@ -165,9 +103,23 @@ send `_value` token to `_to` from `_from` on the condition it is approved by `_f
 
 **Parameters:**
 
+  - `_from`: The address of the sender
   - `_value`: The amount of token to be transferred
   - `_to`: The address of the recipient
+
+**Returns:**
+
+Whether the transfer was successful or not
+
+### `transferGIM(address,address,uint256)`
+
+Called by a Gimli contract to transfer GIM
+
+**Parameters:**
+
+  - `_amount`: The amount of token to be transferred
   - `_from`: The address of the sender
+  - `_to`: The address of the recipient
 
 **Returns:**
 

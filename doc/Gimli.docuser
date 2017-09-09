@@ -12,29 +12,14 @@
       "approve(address,uint256)" : {
          "notice" : "`msg.sender` approves `_spender` to spend `_value` tokens"
       },
-      "authorizeStreamer(address,address,uint256,uint256,uint256)" : {
-         "notice" : "authorize an address to create Gimli game (bet, vote, etc.)"
-      },
       "balanceOf(address)" : {
          "notice" : "Get balance of an address"
       },
       "cancelCrowdsale()" : {
          "notice" : "Terminate the crowdsale before END_DATE"
       },
-      "claimGMLFees(address,address,uint256)" : {
-         "notice" : "Called by a Gimli contract to claim game payment"
-      },
       "closeCrowdsale()" : {
          "notice" : "returns non-sold tokens to owner"
-      },
-      "escrowGML(address,address,uint256)" : {
-         "notice" : "Called by a Gimli contract to put GML in escrow, for instance by GimliBetting when a stake is placed by _userAddress. To unescrow the funds the contract must use the function `transfer`."
-      },
-      "getContractPermissions(address,address)" : {
-         "notice" : "Get information about a contract authorized for a streamer"
-      },
-      "isAuthorizedStreamer(address)" : {
-         "notice" : "Checks if a streamer is authorized"
       },
       "preAllocate(address,uint256)" : {
          "notice" : "Pre-allocate tokens to advisor or partner"
@@ -45,14 +30,17 @@
       "removeAdministrators(address)" : {
          "notice" : "Remove an administrator"
       },
-      "revokeStreamer(address)" : {
-         "notice" : "Revoke a streamer for all contracts"
+      "setStreamerContract(address,uint256)" : {
+         "notice" : "authorize an address to transfer GIM on behalf an user"
       },
       "transfer(address,uint256)" : {
          "notice" : "send `_value` token to `_to` from `msg.sender`"
       },
       "transferFrom(address,address,uint256)" : {
          "notice" : "send `_value` token to `_to` from `_from` on the condition it is approved by `_from`"
+      },
+      "transferGIM(address,address,uint256)" : {
+         "notice" : "Called by a Gimli contract to transfer GIM"
       },
       "transferOtherERC20Token(address,uint256)" : {
          "notice" : "transfer out any accidentally sent ERC20 tokens"

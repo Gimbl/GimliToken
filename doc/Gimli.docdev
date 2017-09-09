@@ -19,50 +19,11 @@
          },
          "return" : "Whether the approval was successful or not"
       },
-      "authorizeStreamer(address,address,uint256,uint256,uint256)" : {
-         "details" : "`_streamerFeesPpm + _gimliFeesPpm` must be equal to 1000",
-         "params" : {
-            "_contractAddress" : "Contract address (GimliBetting, GimliVoting, etc.)",
-            "_gimliFeesPpm" : "Share of fees for Gimli (ppm, ex: 5 for 0.5%)",
-            "_maxAmount" : "The maximum fee or escrow a Streamer can claim to users for a game",
-            "_streamerAddress" : "Authorized address",
-            "_streamerFeesPpm" : "Share of fees for the streamer (ppm, ex: 5 for 0.5%)"
-         }
-      },
       "balanceOf(address)" : {
          "params" : {
             "_owner" : "The address from which the balance will be retrieved"
          },
          "return" : "The balance"
-      },
-      "claimGMLFees(address,address,uint256)" : {
-         "details" : "`msg.sender` and `_streamerAddress` must be authorized with the function `authorizeStreamer()`. `_userAddress` must be the origin of the transaction.",
-         "params" : {
-            "_amount" : "Price paid by `_userAddress`",
-            "_streamerAddress" : "Streamer address who created the game",
-            "_userAddress" : "User address who pays the game"
-         }
-      },
-      "escrowGML(address,address,uint256)" : {
-         "details" : "`msg.sender` and `_streamerAddress` must be authorized with the function `authorizeStreamer()`. `_userAddress` must be the origin of the transaction.",
-         "params" : {
-            "_amount" : "Amount put in escrow",
-            "_streamerAddress" : "Streamer address who created the game",
-            "_userAddress" : "User address who pays the game"
-         }
-      },
-      "getContractPermissions(address,address)" : {
-         "params" : {
-            "_contractAddress" : "The contract address",
-            "_streamerAddress" : "The streamer address"
-         },
-         "return" : "Share of fees for streamer and Gimli, the maximum price authorized and a boolean to indicate if the permission exists."
-      },
-      "isAuthorizedStreamer(address)" : {
-         "params" : {
-            "_streamerAddress" : "The streamer address"
-         },
-         "return" : "A boolean"
       },
       "preAllocate(address,uint256)" : {
          "params" : {
@@ -81,9 +42,10 @@
             "_adminAddress" : "The administrator address to remove"
          }
       },
-      "revokeStreamer(address)" : {
+      "setStreamerContract(address,uint256)" : {
          "params" : {
-            "_streamerAddress" : "Streamer address to revoke"
+            "_contractAddress" : "Address of GimliStreamer contract",
+            "_maxAmount" : "The maximum amount that can be transfered by the contract"
          }
       },
       "transfer(address,uint256)" : {
@@ -98,6 +60,14 @@
             "_from" : "The address of the sender",
             "_to" : "The address of the recipient",
             "_value" : "The amount of token to be transferred"
+         },
+         "return" : "Whether the transfer was successful or not"
+      },
+      "transferGIM(address,address,uint256)" : {
+         "params" : {
+            "_amount" : "The amount of token to be transferred",
+            "_from" : "The address of the sender",
+            "_to" : "The address of the recipient"
          },
          "return" : "Whether the transfer was successful or not"
       },
