@@ -113,7 +113,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
       onlyOwner returns (bool success)
     {
         // can't be used for GIM token
-        require(tokenAddress != address(this) && transferable);
+        require(tokenAddress != address(this) || transferable);
         return ERC20(tokenAddress).transfer(owner, amount);
     }
 }

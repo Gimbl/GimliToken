@@ -331,7 +331,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
       onlyOwner returns (bool success)
     {
         // can't be used for GIM token
-        require(tokenAddress != address(this) && transferable);
+        require(tokenAddress != address(this) || transferable);
         return ERC20(tokenAddress).transfer(owner, amount);
     }
 }
@@ -347,7 +347,7 @@ contract Gimli is GimliCrowdsale, Administrable {
     /// @notice Gimli Contract constructor. `msg.sender` is the owner.
     function Gimli() {
         // Give the multisig wallet initial tokens
-        balances[MULTISIG_WALLET_ADDRESS] = safeAdd(balances[owner], TOTAL_SUPPLY - CROWDSALE_AMOUNT - VESTING_1_AMOUNT - VESTING_2_AMOUNT);
+        balances[MULTISIG_WALLET_ADDRESS] = safeAdd(balances[MULTISIG_WALLET_ADDRESS], TOTAL_SUPPLY - CROWDSALE_AMOUNT - VESTING_1_AMOUNT - VESTING_2_AMOUNT);
         // Give the contract crowdsale amount
         balances[this] = CROWDSALE_AMOUNT;
         // Locked address
