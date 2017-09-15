@@ -35,8 +35,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
 
         // calculate and check quantity
         uint256 quantity = safeDiv(safeMul(msg.value, CROWDSALE_PRICE), 10**(18-uint256(decimals)));
-        if (safeSub(balances[this], quantity) < 0)
-            return;
+        require(safeSub(balances[this], quantity) >= 0);
 
         require(MULTISIG_WALLET_ADDRESS.send(msg.value));
 
@@ -114,7 +113,7 @@ contract GimliCrowdsale is SafeMath, GimliToken {
       onlyOwner returns (bool success)
     {
         // can't be used for GIM token
-        require(tokenAddress != address(this));
+        require(tokenAddress != address(this) && transferable);
         return ERC20(tokenAddress).transfer(owner, amount);
     }
 }

@@ -14,8 +14,8 @@ Get tokens allowed to spent by `_spender`
 
 **Parameters:**
 
-  - `_owner`: The address of the account owning tokens
   - `_spender`: The address of the account able to transfer the tokens
+  - `_owner`: The address of the account owning tokens
 
 **Returns:**
 
@@ -27,8 +27,8 @@ Amount of remaining tokens allowed to spent
 
 **Parameters:**
 
-  - `_value`: The amount of tokens to be approved for transfer
   - `_spender`: The address of the account able to transfer the tokens
+  - `_value`: The amount of tokens to be approved for transfer
 
 **Returns:**
 
@@ -52,9 +52,9 @@ Pre-allocate tokens to advisor or partner
 
 **Parameters:**
 
-  - `_value`: The amount of token to be allocated
   - `_to`: The pre-allocation destination
   - `_price`: ETH paid for these tokens
+  - `_value`: The amount of token to be allocated
 
 ### `releaseVesting(address)`
 
@@ -91,8 +91,8 @@ send `_value` token to `_to` from `msg.sender`
 
 **Parameters:**
 
-  - `_value`: The amount of token to be transferred
   - `_to`: The address of the recipient
+  - `_value`: The amount of token to be transferred
 
 **Returns:**
 
@@ -104,9 +104,9 @@ send `_value` token to `_to` from `_from` on the condition it is approved by `_f
 
 **Parameters:**
 
-  - `_from`: The address of the sender
-  - `_value`: The amount of token to be transferred
   - `_to`: The address of the recipient
+  - `_value`: The amount of token to be transferred
+  - `_from`: The address of the sender
 
 **Returns:**
 
@@ -118,9 +118,9 @@ Called by a Gimli contract to transfer GIM
 
 **Parameters:**
 
+  - `_to`: The address of the recipient
   - `_from`: The address of the sender
   - `_amount`: The amount of token to be transferred
-  - `_to`: The address of the recipient
 
 **Returns:**
 
@@ -132,8 +132,8 @@ transfer out any accidentally sent ERC20 tokens
 
 **Parameters:**
 
-  - `tokenAddress`: Address of the ERC20 contract
   - `amount`: The amount of token to be transfered
+  - `tokenAddress`: Address of the ERC20 contract
 
 ### `transferOwnership(address)`
 

@@ -43,8 +43,8 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     function transfer(address _to, uint256 _value) returns (bool success) {
         require(transferable);
 
-        if (balances[msg.sender] < _value || _value <= 0)
-            return false;
+        require(balances[msg.sender] >= _value && _value >=0);
+
 
         balances[msg.sender] = safeSub(balances[msg.sender], _value);
         balances[_to] = safeAdd(balances[_to], _value);
@@ -61,8 +61,7 @@ contract GimliToken is ERC20, SafeMath, Ownable {
     function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
         require(transferable);
 
-        if (balances[_from] < _value || allowed[_from][msg.sender] < _value || _value <= 0)
-            return false;
+        require(balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value >= 0);
 
         balances[_from] = safeSub(balances[_from], _value);
         balances[_to] = safeAdd(balances[_to], _value);
