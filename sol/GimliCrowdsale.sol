@@ -8,7 +8,7 @@ import "ERC20.sol";
 contract GimliCrowdsale is SafeMath, GimliToken {
 
     address public constant MULTISIG_WALLET_ADDRESS = 0xc79ab28c5c03f1e7fbef056167364e6782f9ff4f;
-    address public constant LOCKED_ADDRESS = 0xc79ab28c5c03f1e7fbef056167364e6782f9ff4f;
+    address public constant LOCKED_ADDRESS = 0xabcdefabcdefabcdefabcdefabcdefabcdefabcd;
 
     // crowdsale
     uint256 public constant CROWDSALE_AMOUNT = 80 * MILLION_GML; // Should not include vested amount
@@ -59,9 +59,9 @@ contract GimliCrowdsale is SafeMath, GimliToken {
         // update balances
         if (balances[this] > 0) {
             uint256 amount = balances[this];
-            balances[owner] = safeAdd(balances[owner], amount);
+            balances[MULTISIG_WALLET_ADDRESS] = safeAdd(balances[MULTISIG_WALLET_ADDRESS], amount);
             balances[this] = 0;
-            Transfer(this, owner, amount);
+            Transfer(this, MULTISIG_WALLET_ADDRESS, amount);
         }
     }
 
