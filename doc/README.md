@@ -14,8 +14,8 @@ Get tokens allowed to spent by `_spender`
 
 **Parameters:**
 
-  - `_spender`: The address of the account able to transfer the tokens
   - `_owner`: The address of the account owning tokens
+  - `_spender`: The address of the account able to transfer the tokens
 
 **Returns:**
 
@@ -53,8 +53,8 @@ Pre-allocate tokens to advisor or partner
 **Parameters:**
 
   - `_value`: The amount of token to be allocated
-  - `_price`: ETH paid for these tokens
   - `_to`: The pre-allocation destination
+  - `_price`: ETH paid for these tokens
 
 ### `releaseVesting(address)`
 
@@ -132,8 +132,8 @@ transfer out any accidentally sent ERC20 tokens
 
 **Parameters:**
 
-  - `amount`: The amount of token to be transfered
   - `tokenAddress`: Address of the ERC20 contract
+  - `amount`: The amount of token to be transfered
 
 ### `transferOwnership(address)`
 

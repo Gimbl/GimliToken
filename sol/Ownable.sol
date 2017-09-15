@@ -14,6 +14,10 @@ contract Ownable {
         _;
     }
 
+    function Ownable() {
+        owner = msg.sender;
+    }
+
     /// @notice Transfer ownership from `owner` to `newOwner`
     /// @param _newOwner The new contract owner
     function transferOwnership(address _newOwner) onlyOwner {
