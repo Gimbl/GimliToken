@@ -233,9 +233,9 @@ contract GimliCrowdsale is SafeMath, GimliToken {
     uint256 public constant START_DATE = 1505736000; //  (epoch timestamp)
     uint256 public constant END_DATE = 1508500800; // TODO (epoch timestamp)
     uint256 public constant CROWDSALE_PRICE = 700; // 700 GML / ETH
-    uint256 public constant VESTING_1_AMOUNT = 15 * MILLION_GML; // TODO
+    uint256 public constant VESTING_1_AMOUNT = 10 * MILLION_GML; // GIM reserve fund
     uint256 public constant VESTING_1_DATE = 1537272000; // TODO (epoch timestamp)
-    uint256 public constant VESTING_2_AMOUNT = 15 * MILLION_GML; // TODO
+    uint256 public constant VESTING_2_AMOUNT = 30 * MILLION_GML; // Team
     uint256 public constant VESTING_2_DATE = 1568808000; // TODO (epoch timestamp)
     bool public vesting1Withdrawn = false;
     bool public vesting2Withdrawn = false;
